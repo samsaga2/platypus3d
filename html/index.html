@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="platypus.js"></script>
+</head>
+
+<body>
+  <script text="text/javscript">
+    Module.onRuntimeInitialized = () => {
+        Module.ccall('run_platypus', null, null, null);
+    };
+  </script>
+</body>
+
+</html>
