@@ -1,11 +1,8 @@
-#include <iostream>
-#include "export.h"
-
-EXPORT void run_platypus() {
-    std::cout << "hello world!!!" << std::endl;
-}
+#include "engine.h"
 
 int main() {
-    run_platypus();  
+    auto engine = PlatypusEngine{};
+    engine.init();
+    engine.run();
     return 0;
 }
