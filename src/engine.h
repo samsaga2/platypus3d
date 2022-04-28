@@ -2,22 +2,26 @@
 #include <utility>
 
 class PlatypusEngine {
- public:
-    ~PlatypusEngine();
+public:
+    virtual ~PlatypusEngine();
 
-    void init();
+    void create();
     void run();
     void main_loop();
     void quit();
 
- private:
+protected:
+    virtual void init() {}
+    virtual void render() {}
+    virtual void update([[maybe_unused]] float elapsed) {}
+
+private:
     GLFWwindow *window_{nullptr};
-    float red_{0.0f};
     float curr_time_;
 
     [[nodiscard]] auto get_window_size() const -> std::pair<int, int>;
 
-    void render();
-    void update(float elapsed);
+    static void framebuffer_size_callback(GLFWwindow *window, int width,
+                                          int height);
     void destroy();
 };
