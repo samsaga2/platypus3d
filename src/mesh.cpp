@@ -1,7 +1,7 @@
-#include "model.h"
+#include "mesh.h"
 
-model::model(const std::vector<float> &vertices,
-             const std::vector<unsigned int> &indices) {
+mesh::mesh(const std::vector<float> &vertices,
+           const std::vector<unsigned int> &indices) {
     // create vertex array object
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -22,13 +22,13 @@ model::model(const std::vector<float> &vertices,
     glEnableVertexAttribArray(0);
 }
 
-model::~model() {
+mesh::~mesh() {
     glDeleteVertexArrays(1, &vao_);
     glDeleteBuffers(1, &vbo_);
     glDeleteBuffers(1, &ebo_);
 }
 
-void model::draw() {
+void mesh::draw() {
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

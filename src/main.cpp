@@ -1,6 +1,6 @@
 #include "engine.h"
 #include "shader.h"
-#include "model.h"
+#include "mesh.h"
 #include "util.h"
 #include <cmath>
 #include <iostream>
@@ -20,7 +20,7 @@ static const auto indices = std::vector<unsigned int>{
 class Test : public PlatypusEngine {
  public:
     ~Test() {
-        delete model_;
+        delete mesh_;
         delete shader_;
     }
 
@@ -29,7 +29,7 @@ class Test : public PlatypusEngine {
         auto vertex_shader = read_whole_file("../res/simple.vert");
         auto fragment_shader = read_whole_file("../res/simple.frag");
         shader_ = new shader(vertex_shader.c_str(), fragment_shader.c_str());
-        model_ = new model(vertices, indices);
+        mesh_ = new mesh(vertices, indices);
     }
 
     void render() override {
@@ -39,7 +39,7 @@ class Test : public PlatypusEngine {
                      1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shader_->use();
-        model_->draw();
+        mesh_->draw();
     }
 
     void update(float elapsed) override {
@@ -53,7 +53,7 @@ class Test : public PlatypusEngine {
     float bg_green_{0.0f};
     float bg_blue_{0.0f};
     shader* shader_;
-    model* model_;
+    mesh* mesh_;
 };
 
 int main() {
