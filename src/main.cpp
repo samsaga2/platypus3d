@@ -1,21 +1,9 @@
 #include "engine.h"
 #include "shader.h"
 #include "model.h"
+#include "util.h"
 #include <cmath>
-
-const char *vertex_shader_source = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-const char *fragment_shader_source = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
+#include <iostream>
 
 static const auto vertices = std::vector<float>{
     0.5f,  0.5f,  0.0f, // top right
@@ -38,7 +26,9 @@ class Test : public PlatypusEngine {
 
  protected:
     void init() override {
-        shader_ = new shader(vertex_shader_source, fragment_shader_source);
+        auto vertex_shader = read_whole_file("../res/simple.vert");
+        auto fragment_shader = read_whole_file("../res/simple.frag");
+        shader_ = new shader(vertex_shader.c_str(), fragment_shader.c_str());
         model_ = new model(vertices, indices);
     }
 
