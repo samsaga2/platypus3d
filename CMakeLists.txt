@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.22)
 
 set(HEADERS
     src/util.h
+    src/stb_image.h
     src/shader.h
+    src/texture.h
     src/mesh.h
     src/engine.h
 )
@@ -11,6 +13,7 @@ set(SOURCES
     src/util.cpp
     src/engine.cpp
     src/shader.cpp
+    src/texture.cpp
     src/mesh.cpp
     src/main.cpp
 )

@@ -1,15 +1,17 @@
 #include "engine.h"
 #include "shader.h"
+#include "texture.h"
 #include "mesh.h"
 #include "util.h"
 #include <cmath>
 #include <iostream>
 
 static const auto vertices = std::vector<float>{
-    0.5f,  0.5f,  0.0f, // top right
-    0.5f,  -0.5f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, // bottom left
-    -0.5f, 0.5f,  0.0f  // top left
+    // vertex           // texcoords
+    0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 
+    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+    -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
 };
 
 static const auto indices = std::vector<unsigned int>{
@@ -22,23 +24,34 @@ class Test : public PlatypusEngine {
     ~Test() {
         delete mesh_;
         delete shader_;
+        delete texture_;
     }
 
  protected:
     void init() override {
+        // create texture
+        texture_ = new texture("../res/wall.jpg");
+
+        // create shaders
         auto vertex_shader = read_whole_file("../res/simple.vert");
         auto fragment_shader = read_whole_file("../res/simple.frag");
         shader_ = new shader(vertex_shader.c_str(), fragment_shader.c_str());
+
+        // create mesh
         mesh_ = new mesh(vertices, indices);
     }
 
     void render() override {
+        // clear background
         glClearColor((std::sin(bg_red_) + 1.0) / 2.0,
                      (std::sin(bg_green_) + 1.0) / 2.0,
                      (std::sin(bg_blue_) + 1.0) / 2.0,
                      1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // draw mesh
         shader_->use();
+        texture_->use();
         mesh_->draw();
     }
 
@@ -53,6 +66,7 @@ class Test : public PlatypusEngine {
     float bg_green_{0.0f};
     float bg_blue_{0.0f};
     shader* shader_;
+    texture* texture_;
     mesh* mesh_;
 };
 
