@@ -5,6 +5,7 @@ set(HEADERS
     src/stb_image.h
     src/shader.h
     src/texture.h
+    src/material.h
     src/mesh.h
     src/engine.h
 )
@@ -14,6 +15,7 @@ set(SOURCES
     src/engine.cpp
     src/shader.cpp
     src/texture.cpp
+    src/material.cpp
     src/mesh.cpp
     src/main.cpp
 )

@@ -1,6 +1,5 @@
 #include "engine.h"
-#include "shader.h"
-#include "texture.h"
+#include "material.h"
 #include "mesh.h"
 #include "util.h"
 #include <cmath>
@@ -23,21 +22,12 @@ class Test : public PlatypusEngine {
  public:
     ~Test() {
         delete mesh_;
-        delete shader_;
-        delete texture_;
+        delete material_;
     }
 
  protected:
     void init() override {
-        // create texture
-        texture_ = new texture("../res/wall.jpg");
-
-        // create shaders
-        auto vertex_shader = read_whole_file("../res/simple.vert");
-        auto fragment_shader = read_whole_file("../res/simple.frag");
-        shader_ = new shader(vertex_shader.c_str(), fragment_shader.c_str());
-
-        // create mesh
+        material_ = new material("../res/simple.material");
         mesh_ = new mesh(vertices, indices);
     }
 
@@ -50,8 +40,7 @@ class Test : public PlatypusEngine {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw mesh
-        shader_->use();
-        texture_->use();
+        material_->use();
         mesh_->draw();
     }
 
@@ -65,8 +54,7 @@ class Test : public PlatypusEngine {
     float bg_red_{0.0f};
     float bg_green_{0.0f};
     float bg_blue_{0.0f};
-    shader* shader_;
-    texture* texture_;
+    material* material_;
     mesh* mesh_;
 };
 

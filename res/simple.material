@@ -1,0 +1,2 @@
+texture wall.jpg
+shader simple.vert simple.frag

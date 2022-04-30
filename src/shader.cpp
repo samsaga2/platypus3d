@@ -4,7 +4,8 @@
 #include <GL/glext.h>
 #include <GLFW/glfw3.h>
 
-shader::shader(const char* vertex_shader_source, const char *fragment_shader_source) {
+shader::shader(const char* vertex_shader_source,
+               const char* fragment_shader_source) {
     auto vertex_shader = load_vertex(vertex_shader_source);
     auto fragment_shader = load_fragment(fragment_shader_source);
     create_shader(vertex_shader, fragment_shader);

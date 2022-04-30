@@ -4,7 +4,8 @@
 
 class shader {
 public:
-    explicit shader(const char* vertex_shader_source, const char *fragment_shader_source);
+    explicit shader(const char* vertex_shader_source,
+                    const char* fragment_shader_source);
     ~shader();
 
     void use();
