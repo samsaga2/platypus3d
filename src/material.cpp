@@ -45,16 +45,17 @@ void material::use() {
 
         // notify to the shader in what slot is the texture
         auto uniform_texture = std::string("texture") + std::to_string(i);
-        shader_->setUniform(uniform_texture.c_str(), i);
+        shader_->set_uniform(uniform_texture.c_str(), i);
     }
 }
 
 void material::load_texture(const char *fname) {
-    textures_.emplace_back(std::make_unique<texture>(fname));
+    textures_.emplace_back(std::make_shared<texture>(fname));
 }
 
 void material::load_shader(const char *vert_fname, const char* frag_fname) {
     auto vert_source = read_whole_file(vert_fname);
     auto frag_source = read_whole_file(frag_fname);
-    shader_ = std::make_unique<shader>(vert_source.c_str(), frag_source.c_str());
+    shader_ = std::make_shared<::shader>(vert_source.c_str(),
+                                         frag_source.c_str());
 }

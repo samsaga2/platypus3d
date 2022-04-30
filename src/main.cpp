@@ -2,6 +2,7 @@
 #include "material.h"
 #include "mesh.h"
 #include "util.h"
+#include "transform.h"
 #include <cmath>
 #include <iostream>
 
@@ -39,7 +40,17 @@ class Test : public PlatypusEngine {
                      1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+
+        // move
+        auto pos = glm::vec3{sinf(glfwGetTime())*0.5, 0, 0};
+        mesh_transform_.set_position(pos);
+
+        auto ori = glm::angleAxis(sinf(glfwGetTime()), glm::vec3{0, 0, 1});
+        mesh_transform_.set_orientation(ori);
+
         // draw mesh
+        auto m = mesh_transform_.model_matrix();
+        material_->shader()->set_uniform("transform", m);
         material_->use();
         mesh_->draw();
     }
@@ -56,6 +67,7 @@ class Test : public PlatypusEngine {
     float bg_blue_{0.0f};
     material* material_;
     mesh* mesh_;
+    transform mesh_transform_;
 };
 
 int main() {

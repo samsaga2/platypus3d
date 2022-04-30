@@ -7,6 +7,7 @@ set(HEADERS
     src/texture.h
     src/material.h
     src/mesh.h
+    src/transform.h
     src/engine.h
 )
 

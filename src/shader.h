@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/gl.h>
+#include <glm/glm.hpp>
 
 class shader {
 public:
@@ -8,7 +9,8 @@ public:
                     const char* fragment_shader_source);
     ~shader();
 
-    void setUniform(const char* name, int value);
+    void set_uniform(const char* name, int value);
+    void set_uniform(const char* name, const glm::mat4& value);
     void use();
 
 private:
