@@ -49,9 +49,8 @@ class Test : public PlatypusEngine {
         mesh_transform_.set_orientation(ori);
 
         // draw mesh
-        auto m = mesh_transform_.model_matrix();
-        material_->shader()->set_uniform("transform", m);
-        material_->use();
+        mesh_transform_.select();
+        material_->select();
         mesh_->draw();
     }
 

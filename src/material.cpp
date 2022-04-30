@@ -34,14 +34,14 @@ void material::load_material(const char *fname) {
     }
 }
 
-void material::use() {
+void material::select() {
     // select the shader
-    shader_->use();
+    shader_->select();
 
     // select the textures
     for(auto i = 0U; i < textures_.size(); i++) {
         // select the texture in their texture slot number
-        textures_[i]->use(i);
+        textures_[i]->select(i);
 
         // notify to the shader in what slot is the texture
         auto uniform_texture = std::string("texture") + std::to_string(i);

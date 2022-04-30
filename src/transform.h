@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class transform {
  public:
@@ -25,6 +26,16 @@ class transform {
         auto m = glm::mat4_cast(orientation_);
         m = m * glm::translate(m, position_);
         return m;
+    }
+
+    auto select() const {
+        auto m = model_matrix();
+
+        // assign the matrix to the transform uniform of the current shader
+        GLint id;
+        glGetIntegerv(GL_CURRENT_PROGRAM,&id);
+        auto loc = glGetUniformLocation(id, "transform");
+        glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(m));
     }
 
  private:

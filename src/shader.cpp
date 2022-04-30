@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <GL/glext.h>
 #include <GLFW/glfw3.h>
-#include <glm/gtc/type_ptr.hpp>
 
 shader::shader(const char* vertex_shader_source,
                const char* fragment_shader_source) {
@@ -21,12 +20,7 @@ void shader::set_uniform(const char* name, int value) {
     glUniform1i(loc, value);
 }
 
-void shader::set_uniform(const char* name, const glm::mat4& value) {
-    auto loc = glGetUniformLocation(id_, name);
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void shader::use() {
+void shader::select() {
     glUseProgram(id_);
 }
 

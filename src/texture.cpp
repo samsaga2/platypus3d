@@ -13,7 +13,7 @@ texture::texture(const char* fname) {
         exit(1);
     }
 
-   // create texture
+    // create texture
     glGenTextures(1, &texture_);
     glBindTexture(GL_TEXTURE_2D, texture_);
 
@@ -38,7 +38,7 @@ texture::~texture() {
     glDeleteTextures(1, &texture_);
 }
 
-void texture::use(unsigned int index) {
+void texture::select(unsigned int index) {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, texture_);
 }

@@ -9,9 +9,7 @@ class material {
  public:
     explicit material(const char *fname);
 
-    [[nodiscard]] auto shader() const { return shader_; }
-
-    void use();
+    void select();
 
  private:
     std::vector<std::shared_ptr<texture>> textures_;

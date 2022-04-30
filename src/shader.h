@@ -10,8 +10,7 @@ public:
     ~shader();
 
     void set_uniform(const char* name, int value);
-    void set_uniform(const char* name, const glm::mat4& value);
-    void use();
+    void select();
 
 private:
     GLuint id_;
