@@ -12,11 +12,15 @@ shader::shader(const char* vertex_shader_source,
 }
 
 shader::~shader() {
-    glDeleteProgram(shader_prog_);
+    glDeleteProgram(id_);
+}
+
+void shader::setUniform(const char* name, int value) {
+    glUniform1i(glGetUniformLocation(id_, name), value);
 }
 
 void shader::use() {
-    glUseProgram(shader_prog_);
+    glUseProgram(id_);
 }
 
 GLuint shader::load_vertex(const char* vertex_shader_source) {
@@ -56,19 +60,19 @@ GLuint shader::load_fragment(const char* fragment_shader_source) {
 }
 
 void shader::create_shader(GLuint vertex_shader, GLuint fragment_shader) {
-    shader_prog_ = glCreateProgram();
-    glAttachShader(shader_prog_, vertex_shader);
-    glAttachShader(shader_prog_, fragment_shader);
-    glLinkProgram(shader_prog_);
+    id_ = glCreateProgram();
+    glAttachShader(id_, vertex_shader);
+    glAttachShader(id_, fragment_shader);
+    glLinkProgram(id_);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
     // check for linking errors
     int success;
     char info[512];
-    glGetProgramiv(shader_prog_, GL_LINK_STATUS, &success);
+    glGetProgramiv(id_, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(shader_prog_, 512, NULL, info);
+        glGetProgramInfoLog(id_, 512, NULL, info);
         std::cerr << "Error compiling vertex shader: "<< info << std::endl;
         throw std::runtime_error(info);
     }

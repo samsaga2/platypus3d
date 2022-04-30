@@ -15,14 +15,18 @@ void material::load_material(const char *fname) {
 
     auto f = std::ifstream(fname);
     for(std::string line; std::getline(f, line);) {
+        // parse line command
         auto ss = std::stringstream{line};
         std::string command;
         ss >> command;
+
         if(command == "texture") {
+            // append a new texture
             std::string arg0;
             ss >> arg0;
             load_texture((base_path / arg0).c_str());
         } else if(command == "shader") {
+            // load vertex and fragment shaders
             std::string arg0, arg1;
             ss >> arg0 >> arg1;
             load_shader((base_path / arg0).c_str(), (base_path / arg1).c_str());
@@ -31,12 +35,22 @@ void material::load_material(const char *fname) {
 }
 
 void material::use() {
-    texture_->use();
+    // select the shader
     shader_->use();
+
+    // select the textures
+    for(auto i = 0U; i < textures_.size(); i++) {
+        // select the texture in their texture slot number
+        textures_[i]->use(i);
+
+        // notify to the shader in what slot is the texture
+        auto uniform_texture = std::string("texture") + std::to_string(i);
+        shader_->setUniform(uniform_texture.c_str(), i);
+    }
 }
 
 void material::load_texture(const char *fname) {
-    texture_ = std::make_unique<texture>(fname);
+    textures_.emplace_back(std::make_unique<texture>(fname));
 }
 
 void material::load_shader(const char *vert_fname, const char* frag_fname) {

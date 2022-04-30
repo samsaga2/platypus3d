@@ -1,2 +1,3 @@
 texture wall.jpg
+texture awesomeface.png
 shader simple.vert simple.frag

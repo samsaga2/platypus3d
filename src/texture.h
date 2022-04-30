@@ -7,7 +7,7 @@ class texture {
     explicit texture(const char* fname);
     ~texture();
 
-    void use();
+    void use(unsigned int index);
 
  private:
     GLuint texture_;

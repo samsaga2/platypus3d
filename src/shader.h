@@ -8,12 +8,14 @@ public:
                     const char* fragment_shader_source);
     ~shader();
 
+    void setUniform(const char* name, int value);
     void use();
 
 private:
-    GLuint shader_prog_;
+    GLuint id_;
 
     GLuint load_vertex(const char* vertex_shader_source);
     GLuint load_fragment(const char* fragment_shader_source);
     void create_shader(GLuint vertex_shader, GLuint fragment_shader);
 };
+

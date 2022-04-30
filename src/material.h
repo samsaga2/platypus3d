@@ -3,6 +3,7 @@
 #include "texture.h"
 #include "shader.h"
 #include <memory>
+#include <vector>
 
 class material {
  public:
@@ -11,7 +12,7 @@ class material {
     void use();
 
  private:
-    std::unique_ptr<texture> texture_;
+    std::vector<std::unique_ptr<texture>> textures_;
     std::unique_ptr<shader> shader_;
     
     void load_material(const char *fname);

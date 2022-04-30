@@ -24,7 +24,10 @@ texture::texture(const char* fname) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // bind data
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0,
+                 GL_RGB, width, height, 0,
+                 channels == 4 ? GL_RGBA : GL_RGB,
+                 GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // free image
@@ -35,7 +38,7 @@ texture::~texture() {
     glDeleteTextures(1, &texture_);
 }
 
-void texture::use() {
-    glActiveTexture(GL_TEXTURE0);
+void texture::use(unsigned int index) {
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, texture_);
 }
