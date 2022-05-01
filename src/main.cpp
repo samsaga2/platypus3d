@@ -28,19 +28,19 @@ class demoapp : public engine {
     }
 
     void render() override {
-        mesh_transform_.select();
+        auto m = transform_.matrix();
         material_->select();
-        vertex_buffer_->draw();
+        vertex_buffer_->draw(m);
     }
 
     void update(float elapsed) override {
         delta_ += elapsed;
 
-        auto pos = glm::vec3{sinf(delta_)*0.5, 0, 0};
-        mesh_transform_.set_position(pos);
+        auto pos = glm::vec3{cosf(delta_)*0.5f, 0, 0};
+        transform_.set_position(pos);
 
-        auto ori = glm::angleAxis(sinf(delta_), glm::vec3{0, 0, 1});
-        mesh_transform_.set_orientation(ori);
+        auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 0, 1});
+        transform_.set_orientation(ori);
     }
 
  private:
@@ -48,7 +48,7 @@ class demoapp : public engine {
     float delta_{0};
     std::unique_ptr<material> material_;
     std::shared_ptr<vertex_buffer> vertex_buffer_;
-    transform mesh_transform_;
+    transform transform_;
 };
 
 int main() {
