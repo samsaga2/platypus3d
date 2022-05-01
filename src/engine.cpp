@@ -1,5 +1,6 @@
 #include "engine.h"
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 engine::engine(render_factory& factory) : factory_(factory) {}
 
@@ -23,7 +24,7 @@ void engine::create() {
     glfwMakeContextCurrent(window_);
     glfwSetFramebufferSizeCallback(window_, &engine::framebuffer_size_callback);
 
-    curr_time_ = glfwGetTime();
+    curr_time_ = std::chrono::high_resolution_clock::now();
     init();
 }
 
@@ -32,8 +33,8 @@ void engine::framebuffer_size_callback(GLFWwindow* window, int width, int height
 }
 
 void engine::main_loop() {
-    auto time = glfwGetTime();
-    auto elapsed = time - curr_time_;
+    auto time = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time-curr_time_).count() / 1000.0f;
     curr_time_ = time;
 
     if (glfwGetKey(window_, GLFW_KEY_ESCAPE))

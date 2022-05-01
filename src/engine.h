@@ -1,6 +1,8 @@
-#include <GLFW/glfw3.h>
 #include <utility>
+#include <chrono>
 #include "render_factory.h"
+
+class GLFWwindow;
 
 class engine {
 public:
@@ -24,7 +26,7 @@ protected:
 private:
     render_factory& factory_;
     GLFWwindow *window_{nullptr};
-    float curr_time_;
+    std::chrono::high_resolution_clock::time_point curr_time_;
 
     [[nodiscard]] auto get_window_size() const -> std::pair<int, int>;
 

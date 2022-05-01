@@ -18,37 +18,41 @@ static const auto indices = std::vector<unsigned int>{
 };
 
 class demoapp : public engine {
+ public:
+    explicit demoapp() : engine(factory_) {}
+
  protected:
-    using engine::engine;
-    
     void init() override {
-        vertex_buffer_ = factory().create_vertex_buffer(vertices, indices);
-        material_ = std::make_unique<material>("../res/simple.material", factory());
+        vertex_buffer_ = factory_.create_vertex_buffer(vertices, indices);
+        material_ = std::make_unique<material>("../res/simple.material", factory_);
     }
 
     void render() override {
-        // move
-        auto pos = glm::vec3{sinf(glfwGetTime())*0.5, 0, 0};
-        mesh_transform_.set_position(pos);
-
-        auto ori = glm::angleAxis(sinf(glfwGetTime()), glm::vec3{0, 0, 1});
-        mesh_transform_.set_orientation(ori);
-
-        // draw mesh
         mesh_transform_.select();
         material_->select();
         vertex_buffer_->draw();
     }
 
+    void update(float elapsed) override {
+        delta_ += elapsed;
+
+        auto pos = glm::vec3{sinf(delta_)*0.5, 0, 0};
+        mesh_transform_.set_position(pos);
+
+        auto ori = glm::angleAxis(sinf(delta_), glm::vec3{0, 0, 1});
+        mesh_transform_.set_orientation(ori);
+    }
+
  private:
+    gl_render_factory factory_;
+    float delta_{0};
     std::unique_ptr<material> material_;
     std::shared_ptr<vertex_buffer> vertex_buffer_;
     transform mesh_transform_;
 };
 
 int main() {
-    auto factory = gl_render_factory{};
-    auto app = demoapp{factory};
+    auto app = demoapp{};
     app.create();
     app.run();
     return 0;
