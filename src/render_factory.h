@@ -3,11 +3,14 @@
 #include "texture.h"
 #include "shader.h"
 #include "vertex_buffer.h"
+#include "render_device.h"
 #include <memory>
 #include <vector>
 
 class render_factory {
  public:
+    [[nodiscard]]  virtual auto create_device()
+        -> std::shared_ptr<render_device> = 0;
     [[nodiscard]]  virtual auto create_texture(const char *fname)
         -> std::shared_ptr<texture> = 0;
     [[nodiscard]]  virtual auto create_shader(const char *fname)

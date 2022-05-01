@@ -1,0 +1,60 @@
+#include "gl_render_device.h"
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <chrono>
+
+void gl_render_device::create_window(int width, int height)  {
+    if (!glfwInit()) {
+        std::cerr << "Error initializing glfw" << std::endl;
+        quit();
+        return;
+    }
+
+    window_ = glfwCreateWindow(width, height, "Platypus", nullptr, nullptr);
+    if (!window_) {
+        std::cerr << "Error creating window" << std::endl;
+        quit();
+        return;
+    }
+
+    glfwMakeContextCurrent(window_);
+    glfwSetFramebufferSizeCallback(window_,
+                                   &gl_render_device::framebuffer_size_callback);
+}
+
+gl_render_device::~gl_render_device() {
+    if (window_ != nullptr)
+        glfwDestroyWindow(window_);
+    glfwTerminate();
+}
+
+void gl_render_device::framebuffer_size_callback(GLFWwindow* window,
+                                                 int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
+void gl_render_device::run_loop(std::function<void(float)> update_fn) {
+    auto prev_time = std::chrono::high_resolution_clock::now();
+    while (!glfwWindowShouldClose(window_)) {
+        // calc elapsed time
+        auto time = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time - prev_time).count() / 1000.0f;
+        prev_time = time;
+
+        // escape key quit
+        if (glfwGetKey(window_, GLFW_KEY_ESCAPE))
+            quit();
+
+        // update
+        glClear(GL_COLOR_BUFFER_BIT);
+        update_fn(elapsed);
+
+        // update glfw
+        glfwSwapBuffers(window_);
+        glfwPollEvents();
+    }
+}
+
+void gl_render_device::quit() {
+    glfwSetWindowShouldClose(window_, GL_TRUE);
+}

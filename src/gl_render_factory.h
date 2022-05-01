@@ -4,6 +4,8 @@
 
 class gl_render_factory : public render_factory {
  public:
+    auto create_device()
+        -> std::shared_ptr<render_device> override;
     auto create_texture(const char *fname)
         -> std::shared_ptr<texture> override;
     auto create_shader(const char *fname)

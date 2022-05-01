@@ -8,6 +8,7 @@ set(HEADERS
     src/texture.h
     src/material.h
     src/vertex_buffer.h
+    src/render_device.h
     src/render_factory.h
 
     src/gl_texture.h
@@ -28,6 +29,7 @@ set(SOURCES
     src/gl_shader.cpp
     src/gl_texture.cpp
     src/gl_vertex_buffer.cpp
+    src/gl_render_device.cpp
     src/gl_render_factory.cpp
 
     src/main.cpp
