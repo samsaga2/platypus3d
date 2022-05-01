@@ -8,11 +8,12 @@ set(HEADERS
     src/texture.h
     src/material.h
     src/vertex_buffer.h
+    src/render_factory.h
 
     src/gl_texture.h
     src/gl_shader.h
-    src/gl_material.h
     src/gl_vertex_buffer.h
+    src/gl_render_factory.h
 
     src/transform.h
     src/engine.h
@@ -26,8 +27,8 @@ set(SOURCES
 
     src/gl_shader.cpp
     src/gl_texture.cpp
-    src/gl_material.cpp
     src/gl_vertex_buffer.cpp
+    src/gl_render_factory.cpp
 
     src/main.cpp
 )

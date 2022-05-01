@@ -6,6 +6,10 @@
 
 namespace fs = std::filesystem;
 
+material::material(const char *fname, render_factory& factory) : factory_(factory) {
+    load_material(fname);
+}
+
 void material::load_material(const char *fname) {
     auto base_path = fs::path{fname}.parent_path();
 
@@ -20,12 +24,12 @@ void material::load_material(const char *fname) {
             // append a new texture
             std::string arg0;
             ss >> arg0;
-            textures_.emplace_back(load_texture((base_path / arg0).c_str()));
+            textures_.emplace_back(factory_.create_texture((base_path / arg0).c_str()));
         } else if(command == "shader") {
             // load vertex and fragment shaders
             std::string arg;
             ss >> arg;
-            shader_ = load_shader((base_path / arg).c_str());
+            shader_ = factory_.create_shader((base_path / arg).c_str());
         }
     }
 }

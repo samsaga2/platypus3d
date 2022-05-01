@@ -1,9 +1,11 @@
 #include <GLFW/glfw3.h>
 #include <utility>
+#include "render_factory.h"
 
-class PlatypusEngine {
+class engine {
 public:
-    virtual ~PlatypusEngine();
+    explicit engine(render_factory& factory);
+    virtual ~engine();
 
     void create();
     void run();
@@ -11,11 +13,16 @@ public:
     void quit();
 
 protected:
+    [[nodiscard]] auto factory() const -> render_factory& {
+        return factory_;
+    }
+
     virtual void init() {}
     virtual void render() {}
     virtual void update([[maybe_unused]] float elapsed) {}
 
 private:
+    render_factory& factory_;
     GLFWwindow *window_{nullptr};
     float curr_time_;
 

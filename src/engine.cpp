@@ -1,9 +1,11 @@
 #include "engine.h"
 #include <iostream>
 
-PlatypusEngine::~PlatypusEngine() { destroy(); }
+engine::engine(render_factory& factory) : factory_(factory) {}
 
-void PlatypusEngine::create() {
+engine::~engine() { destroy(); }
+
+void engine::create() {
     if (!glfwInit()) {
         std::cerr << "Error initializing glfw" << std::endl;
         quit();
@@ -19,17 +21,17 @@ void PlatypusEngine::create() {
     }
 
     glfwMakeContextCurrent(window_);
-    glfwSetFramebufferSizeCallback(window_, &PlatypusEngine::framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window_, &engine::framebuffer_size_callback);
 
     curr_time_ = glfwGetTime();
     init();
 }
 
-void PlatypusEngine::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void engine::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void PlatypusEngine::main_loop() {
+void engine::main_loop() {
     auto time = glfwGetTime();
     auto elapsed = time - curr_time_;
     curr_time_ = time;
@@ -45,19 +47,19 @@ void PlatypusEngine::main_loop() {
     glfwPollEvents();
 }
 
-void PlatypusEngine::destroy() {
+void engine::destroy() {
     if (window_ != nullptr)
         glfwDestroyWindow(window_);
     glfwTerminate();
 }
 
-auto PlatypusEngine::get_window_size() const -> std::pair<int, int> {
+auto engine::get_window_size() const -> std::pair<int, int> {
     return {800, 600};
 }
 
-void PlatypusEngine::run() {
+void engine::run() {
     while (!glfwWindowShouldClose(window_))
         main_loop();
 }
 
-void PlatypusEngine::quit() { glfwSetWindowShouldClose(window_, GL_TRUE); }
+void engine::quit() { glfwSetWindowShouldClose(window_, GL_TRUE); }

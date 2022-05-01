@@ -1,6 +1,6 @@
 #include "engine.h"
-#include "gl_material.h"
-#include "gl_vertex_buffer.h"
+#include "gl_render_factory.h"
+#include "material.h"
 #include "transform.h"
 #include <cmath>
 
@@ -17,17 +17,13 @@ static const auto indices = std::vector<unsigned int>{
     1, 2, 3  // second Triangle
 };
 
-class Test : public PlatypusEngine {
- public:
-    ~Test() {
-        delete vertex_buffer_;
-        delete material_;
-    }
-
+class demoapp : public engine {
  protected:
+    using engine::engine;
+    
     void init() override {
-        material_ = new gl_material("../res/simple.material");
-        vertex_buffer_ = new gl_vertex_buffer(vertices, indices);
+        vertex_buffer_ = factory().create_vertex_buffer(vertices, indices);
+        material_ = std::make_unique<material>("../res/simple.material", factory());
     }
 
     void render() override {
@@ -45,14 +41,15 @@ class Test : public PlatypusEngine {
     }
 
  private:
-    material* material_;
-    vertex_buffer* vertex_buffer_;
+    std::unique_ptr<material> material_;
+    std::shared_ptr<vertex_buffer> vertex_buffer_;
     transform mesh_transform_;
 };
 
 int main() {
-    auto test = Test{};
-    test.create();
-    test.run();
+    auto factory = gl_render_factory{};
+    auto app = demoapp{factory};
+    app.create();
+    app.run();
     return 0;
 }
