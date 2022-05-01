@@ -1,14 +1,8 @@
 #pragma once
 
-#include <GL/gl.h>
-
 class texture {
  public:
-    explicit texture(const char* fname);
-    ~texture();
+    virtual ~texture() = default;
 
-    void select(unsigned int index);
-
- private:
-    GLuint texture_;
+    virtual void select(unsigned int slot_index) = 0;
 };

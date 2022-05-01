@@ -1,10 +1,10 @@
-#include "texture.h"
+#include "gl_texture.h"
 #include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-texture::texture(const char* fname) {
+gl_texture::gl_texture(const char* fname) {
     // load image
     int width, height, channels;
     auto *data = stbi_load(fname, &width, &height, &channels, 0);
@@ -14,8 +14,8 @@ texture::texture(const char* fname) {
     }
 
     // create texture
-    glGenTextures(1, &texture_);
-    glBindTexture(GL_TEXTURE_2D, texture_);
+    glGenTextures(1, &id_);
+    glBindTexture(GL_TEXTURE_2D, id_);
 
     // texture settings
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -34,11 +34,20 @@ texture::texture(const char* fname) {
     stbi_image_free(data);
 }
 
-texture::~texture() {
-    glDeleteTextures(1, &texture_);
+gl_texture::~gl_texture() {
+    glDeleteTextures(1, &id_);
 }
 
-void texture::select(unsigned int index) {
-    glActiveTexture(GL_TEXTURE0 + index);
-    glBindTexture(GL_TEXTURE_2D, texture_);
+void gl_texture::select(unsigned int slot_index) {
+    // bind the texture
+    glActiveTexture(GL_TEXTURE0 + slot_index);
+    glBindTexture(GL_TEXTURE_2D, id_);
+
+    // notify to the shader in what slot is the texture
+    GLint shader_id;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &shader_id);
+
+    auto uniform_texture = std::string("texture") + std::to_string(slot_index);
+    auto loc = glGetUniformLocation(shader_id, uniform_texture.c_str());
+    glUniform1i(loc, slot_index);
 }

@@ -1,7 +1,7 @@
-#include "mesh.h"
+#include "gl_vertex_buffer.h"
 
-mesh::mesh(const std::vector<float> &vertices,
-           const std::vector<unsigned int> &indices) {
+gl_vertex_buffer::gl_vertex_buffer(const std::vector<float> &vertices,
+                                   const std::vector<unsigned int> &indices) {
     // create vertex array object
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -27,13 +27,13 @@ mesh::mesh(const std::vector<float> &vertices,
     glEnableVertexAttribArray(1);
 }
 
-mesh::~mesh() {
+gl_vertex_buffer::~gl_vertex_buffer() {
     glDeleteVertexArrays(1, &vao_);
     glDeleteBuffers(1, &vbo_);
     glDeleteBuffers(1, &ebo_);
 }
 
-void mesh::draw() {
+void gl_vertex_buffer::draw() {
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

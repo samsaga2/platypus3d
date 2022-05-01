@@ -1,10 +1,8 @@
 #include "engine.h"
-#include "material.h"
-#include "mesh.h"
-#include "util.h"
+#include "gl_material.h"
+#include "gl_vertex_buffer.h"
 #include "transform.h"
 #include <cmath>
-#include <iostream>
 
 static const auto vertices = std::vector<float>{
     // vertex           // texcoords
@@ -22,25 +20,17 @@ static const auto indices = std::vector<unsigned int>{
 class Test : public PlatypusEngine {
  public:
     ~Test() {
-        delete mesh_;
+        delete vertex_buffer_;
         delete material_;
     }
 
  protected:
     void init() override {
-        material_ = new material("../res/simple.material");
-        mesh_ = new mesh(vertices, indices);
+        material_ = new gl_material("../res/simple.material");
+        vertex_buffer_ = new gl_vertex_buffer(vertices, indices);
     }
 
     void render() override {
-        // clear background
-        glClearColor((std::sin(bg_red_) + 1.0) / 2.0,
-                     (std::sin(bg_green_) + 1.0) / 2.0,
-                     (std::sin(bg_blue_) + 1.0) / 2.0,
-                     1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-
         // move
         auto pos = glm::vec3{sinf(glfwGetTime())*0.5, 0, 0};
         mesh_transform_.set_position(pos);
@@ -51,21 +41,12 @@ class Test : public PlatypusEngine {
         // draw mesh
         mesh_transform_.select();
         material_->select();
-        mesh_->draw();
-    }
-
-    void update(float elapsed) override {
-        bg_red_ += elapsed * 8;
-        bg_green_ += elapsed * 6;
-        bg_blue_ += elapsed * 4;
+        vertex_buffer_->draw();
     }
 
  private:
-    float bg_red_{0.0f};
-    float bg_green_{0.0f};
-    float bg_blue_{0.0f};
     material* material_;
-    mesh* mesh_;
+    vertex_buffer* vertex_buffer_;
     transform mesh_transform_;
 };
 

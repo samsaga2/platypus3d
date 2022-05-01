@@ -6,16 +6,16 @@
 #include <vector>
 
 class material {
- public:
-    explicit material(const char *fname);
-
+public:
     void select();
 
- private:
+protected:
+    void load_material(const char *fname);
+
+    [[nodiscard]] virtual std::shared_ptr<texture> load_texture(const char *fname) = 0;
+    [[nodiscard]] virtual std::shared_ptr<shader> load_shader(const char *fname) = 0;
+
+private:
     std::vector<std::shared_ptr<texture>> textures_;
     std::shared_ptr<::shader> shader_;
-    
-    void load_material(const char *fname);
-    void load_texture(const char *fname);
-    void load_shader(const char *vert_fname, const char *frag_fname);
 };

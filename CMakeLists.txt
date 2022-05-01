@@ -3,21 +3,32 @@ cmake_minimum_required(VERSION 3.22)
 set(HEADERS
     src/util.h
     src/stb_image.h
+
     src/shader.h
     src/texture.h
     src/material.h
-    src/mesh.h
+    src/vertex_buffer.h
+
+    src/gl_texture.h
+    src/gl_shader.h
+    src/gl_material.h
+    src/gl_vertex_buffer.h
+
     src/transform.h
     src/engine.h
 )
 
 set(SOURCES
     src/util.cpp
+
     src/engine.cpp
-    src/shader.cpp
-    src/texture.cpp
     src/material.cpp
-    src/mesh.cpp
+
+    src/gl_shader.cpp
+    src/gl_texture.cpp
+    src/gl_material.cpp
+    src/gl_vertex_buffer.cpp
+
     src/main.cpp
 )
 

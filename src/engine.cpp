@@ -37,6 +37,7 @@ void PlatypusEngine::main_loop() {
     if (glfwGetKey(window_, GLFW_KEY_ESCAPE))
         quit();
 
+    glClear(GL_COLOR_BUFFER_BIT);
     update(elapsed);
     render();
 
