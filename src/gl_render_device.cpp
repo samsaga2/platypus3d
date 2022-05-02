@@ -20,6 +20,8 @@ void gl_render_device::create_window(int width, int height)  {
     glfwMakeContextCurrent(window_);
     glfwSetFramebufferSizeCallback(window_,
                                    &gl_render_device::framebuffer_size_callback);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 gl_render_device::~gl_render_device() {
@@ -46,7 +48,7 @@ void gl_render_device::run_loop(std::function<void(float)> update_fn) {
             quit();
 
         // update
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         update_fn(elapsed);
 
         // update glfw

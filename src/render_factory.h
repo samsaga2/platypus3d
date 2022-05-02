@@ -15,6 +15,8 @@ class render_factory {
         -> std::shared_ptr<texture> = 0;
     [[nodiscard]]  virtual auto create_shader(const char *fname)
         -> std::shared_ptr<shader> = 0;
+    [[nodiscard]]  virtual auto create_vertex_buffer(const std::vector<float> &vertices)
+        -> std::shared_ptr<vertex_buffer> = 0;
     [[nodiscard]]  virtual auto create_vertex_buffer(const std::vector<float> &vertices,
                                                      const std::vector<unsigned int> &indices)
         -> std::shared_ptr<vertex_buffer> = 0;

@@ -3,6 +3,7 @@
 #include "gl_texture.h"
 #include "gl_shader.h"
 #include "gl_vertex_buffer.h"
+#include "gl_indexed_vertex_buffer.h"
 
 auto gl_render_factory::create_device()
     -> std::shared_ptr<render_device>  {
@@ -22,9 +23,15 @@ auto gl_render_factory::create_shader(const char *fname)
     return std::dynamic_pointer_cast<shader>(o);
 }
 
+auto gl_render_factory::create_vertex_buffer(const std::vector<float> &vertices)
+    -> std::shared_ptr<vertex_buffer> {
+    auto o = std::make_shared<gl_vertex_buffer>(vertices);
+    return std::dynamic_pointer_cast<vertex_buffer>(o);
+}
+
 auto gl_render_factory::create_vertex_buffer(const std::vector<float> &vertices,
                                              const std::vector<unsigned int> &indices)
     -> std::shared_ptr<vertex_buffer> {
-    auto o = std::make_shared<gl_vertex_buffer>(vertices, indices);
+    auto o = std::make_shared<gl_indexed_vertex_buffer>(vertices, indices);
     return std::dynamic_pointer_cast<vertex_buffer>(o);
 }

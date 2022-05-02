@@ -5,16 +5,48 @@
 #include <cmath>
 
 static const auto vertices = std::vector<float>{
-    // vertex           // texcoords
-    0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 
-    0.5f,  -0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-    -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
-};
+    // vertex             // texcoords
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-static const auto indices = std::vector<unsigned int>{
-    0, 1, 3, // first Triangle
-    1, 2, 3  // second Triangle
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
 class demoapp : public engine {
@@ -23,7 +55,7 @@ class demoapp : public engine {
 
  protected:
     void init() override {
-        vertex_buffer_ = factory_.create_vertex_buffer(vertices, indices);
+        vertex_buffer_ = factory_.create_vertex_buffer(vertices);
         material_ = std::make_unique<material>("../res/simple.material", factory_);
 
         view_ = glm::mat4(1.0f);
@@ -44,7 +76,7 @@ class demoapp : public engine {
         auto pos = glm::vec3{cosf(delta_)*0.5f, 0, 0};
         model_.set_position(pos);
 
-        auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 0, 1});
+        auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 2.0, 1});
         model_.set_orientation(ori);
     }
 

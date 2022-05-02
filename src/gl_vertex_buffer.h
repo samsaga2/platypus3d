@@ -6,8 +6,7 @@
 
 class gl_vertex_buffer : public vertex_buffer {
 public:
-    explicit gl_vertex_buffer(const std::vector<float> &vertices,
-                              const std::vector<unsigned int> &indices);
+    explicit gl_vertex_buffer(const std::vector<float> &vertices);
     ~gl_vertex_buffer();
 
     void draw(const glm::mat4& m) override;
@@ -15,5 +14,5 @@ public:
 private:
     GLuint vbo_;
     GLuint vao_;
-    GLuint ebo_;
+    GLsizei size_;
 };

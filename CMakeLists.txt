@@ -14,6 +14,7 @@ set(HEADERS
     src/gl_texture.h
     src/gl_shader.h
     src/gl_vertex_buffer.h
+    src/gl_indexed_vertex_buffer.h
     src/gl_render_factory.h
 
     src/transform.h
@@ -29,6 +30,7 @@ set(SOURCES
     src/gl_shader.cpp
     src/gl_texture.cpp
     src/gl_vertex_buffer.cpp
+    src/gl_indexed_vertex_buffer.cpp
     src/gl_render_device.cpp
     src/gl_render_factory.cpp
 
