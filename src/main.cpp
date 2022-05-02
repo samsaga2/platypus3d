@@ -25,10 +25,15 @@ class demoapp : public engine {
     void init() override {
         vertex_buffer_ = factory_.create_vertex_buffer(vertices, indices);
         material_ = std::make_unique<material>("../res/simple.material", factory_);
+
+        view_ = glm::mat4(1.0f);
+        view_ = glm::translate(view_, glm::vec3(0.0f, 0.0f, -3.0f));
+
+        projection_ = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
     }
 
     void render() override {
-        auto m = transform_.matrix();
+        auto m = projection_ * view_ * model_.matrix();
         material_->select();
         vertex_buffer_->draw(m);
     }
@@ -37,10 +42,10 @@ class demoapp : public engine {
         delta_ += elapsed;
 
         auto pos = glm::vec3{cosf(delta_)*0.5f, 0, 0};
-        transform_.set_position(pos);
+        model_.set_position(pos);
 
         auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 0, 1});
-        transform_.set_orientation(ori);
+        model_.set_orientation(ori);
     }
 
  private:
@@ -48,7 +53,9 @@ class demoapp : public engine {
     float delta_{0};
     std::unique_ptr<material> material_;
     std::shared_ptr<vertex_buffer> vertex_buffer_;
-    transform transform_;
+    transform model_;
+    glm::mat4 view_;
+    glm::mat4 projection_;
 };
 
 int main() {
