@@ -18,6 +18,7 @@ set(HEADERS
     src/gl_render_factory.h
 
     src/transform.h
+    src/camera.h
     src/engine.h
 )
 
@@ -34,6 +35,7 @@ set(SOURCES
     src/gl_render_device.cpp
     src/gl_render_factory.cpp
 
+    src/camera.cpp
     src/main.cpp
 )
 
@@ -46,7 +48,10 @@ find_package(glfw3 REQUIRED)
 target_link_libraries(platypus glfw GL)
 target_compile_definitions(platypus PUBLIC GL_GLEXT_PROTOTYPES)
 
-# copy compile commands after build
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
+endif()
+
 add_custom_target(
   copy-compile-commands ALL
   ${CMAKE_COMMAND} -E copy_if_different

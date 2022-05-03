@@ -12,6 +12,9 @@ class gl_render_device : public render_device {
     void run_loop(std::function<void(float)> update_fn) override;
     void quit() override;
 
+protected:
+     auto is_key_down(int key) -> bool override;
+
  private:
     GLFWwindow *window_{nullptr};
 

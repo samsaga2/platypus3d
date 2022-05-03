@@ -18,3 +18,7 @@ void engine::run() {
             render();
         });
 }
+
+auto engine::is_key_down(int key) -> bool {
+    return device_->is_key_down(key);
+}

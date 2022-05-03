@@ -60,3 +60,7 @@ void gl_render_device::run_loop(std::function<void(float)> update_fn) {
 void gl_render_device::quit() {
     glfwSetWindowShouldClose(window_, GL_TRUE);
 }
+
+auto gl_render_device::is_key_down(int key) -> bool {
+    return glfwGetKey(window_, key);
+}
