@@ -28,6 +28,6 @@ class transform {
     }
 
  private:
-    glm::vec3 position_;
-    glm::quat orientation_;
+    glm::vec3 position_{0.0f, 0.0f, 0.0f};
+    glm::quat orientation_{0.0f, 0.0f, 0.0f, 0.0f};
 };
