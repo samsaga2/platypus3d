@@ -20,12 +20,16 @@ gl_indexed_vertex_buffer::gl_indexed_vertex_buffer(const std::vector<float> &ver
                  indices.data(), GL_STATIC_DRAW);
 
     // assign vertices to the shader location 0
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     // assign texcoords to the shader location 1
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    // assign colors to the shader location 2
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(5 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 }
 
 gl_indexed_vertex_buffer::~gl_indexed_vertex_buffer() {

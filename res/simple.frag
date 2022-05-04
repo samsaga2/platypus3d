@@ -1,6 +1,7 @@
 #version 330 core
 
 in vec2 TexCoord;
+in vec3 Color;
 
 out vec4 FragColor;
 
@@ -11,5 +12,5 @@ void main()
 {
    FragColor = mix(texture(texture0, TexCoord),
                    texture(texture1, TexCoord),
-                   0.1);
+                   0.1) * vec4(Color, 0);
 }
