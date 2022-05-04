@@ -2,12 +2,21 @@
 #include "util.h"
 #include <fstream>
 #include <sstream>
-#include <filesystem>
 
 namespace fs = std::filesystem;
 
 material::material(const char *fname, render_factory& factory) : factory_(factory) {
     load_material(fname);
+}
+
+void material::append_texture(const fs::path& fname) {
+    textures_.emplace_back(factory_.create_texture(fname.c_str()));
+}
+
+void material::load_shader(const fs::path& fname) {
+    // load vertex and fragment shaders
+    shader_ = factory_.create_shader(fname.c_str());
+    shader_->select();
 }
 
 void material::load_material(const char *fname) {
@@ -20,16 +29,23 @@ void material::load_material(const char *fname) {
         std::string command;
         ss >> command;
 
+        // exec command
         if(command == "texture") {
-            // append a new texture
-            std::string arg0;
-            ss >> arg0;
-            textures_.emplace_back(factory_.create_texture((base_path / arg0).c_str()));
-        } else if(command == "shader") {
-            // load vertex and fragment shaders
             std::string arg;
             ss >> arg;
-            shader_ = factory_.create_shader((base_path / arg).c_str());
+            append_texture(base_path / arg);
+        } else if(command == "shader") {
+            std::string arg;
+            ss >> arg;
+            load_shader(base_path / arg);
+        } else if(command == "set_uniform_vec3") {
+            std::string name;
+            float x, y, z;
+            ss >> name >> x >> y >> z;
+            set_uniform(name.c_str(), glm::vec3{x, y, z});
+        } else {
+            std::cerr << "Unknown material command " << command << std::endl;
+            exit(1);
         }
     }
 }

@@ -7,6 +7,7 @@ set(HEADERS
     src/shader.h
     src/texture.h
     src/material.h
+    src/light.h
     src/vertex_buffer.h
     src/render_device.h
     src/render_factory.h

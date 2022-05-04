@@ -38,14 +38,7 @@ gl_indexed_vertex_buffer::~gl_indexed_vertex_buffer() {
     glDeleteBuffers(1, &ebo_);
 }
 
-void gl_indexed_vertex_buffer::draw(const glm::mat4& m) {
-    // assign the matrix to the transform uniform of the current shader
-    GLint id;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &id);
-    auto loc = glGetUniformLocation(id, "transform");
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(m));
-
-    // draw the vertex buffer
+void gl_indexed_vertex_buffer::draw() {
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

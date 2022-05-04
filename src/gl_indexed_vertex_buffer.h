@@ -10,7 +10,7 @@ public:
                                       const std::vector<unsigned int> &indices);
     ~gl_indexed_vertex_buffer();
 
-    void draw(const glm::mat4& m) override;
+    void draw() override;
 
 private:
     GLuint vbo_;

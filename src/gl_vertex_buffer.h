@@ -9,7 +9,7 @@ public:
     explicit gl_vertex_buffer(const std::vector<float> &vertices);
     ~gl_vertex_buffer();
 
-    void draw(const glm::mat4& m) override;
+    void draw() override;
 
 private:
     GLuint vbo_;

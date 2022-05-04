@@ -2,6 +2,7 @@
 #include "gl_render_factory.h"
 #include "material.h"
 #include "transform.h"
+#include "light.h"
 #include "camera.h"
 #include <cmath>
 
@@ -9,47 +10,47 @@
 
 static const auto vertices = std::vector<float>{
     // vertex             // texcoords   // colors
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
 
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
 
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
 
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
 
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
 
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   0.0f, 0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
 };
 
 class demoapp : public engine {
@@ -61,12 +62,19 @@ class demoapp : public engine {
         vertex_buffer_ = factory_.create_vertex_buffer(vertices);
         material_ = std::make_unique<material>("../res/simple.material", factory_);
         camera_.set_position({0.0f, 0.1f, 3.0f});
+        light_.set_position({1.2f, 1.0f, 2.0f});
     }
 
     void render() override {
         auto m = camera_.projection_matrix() * camera_.view_matrix() * model_.matrix();
+
+        // select material
         material_->select();
-        vertex_buffer_->draw(m);
+        material_->set_uniform("lightColor", light_.color());
+        material_->set_uniform("transform", m);
+
+        // render verex buffer
+        vertex_buffer_->draw();
     }
 
     void update(float elapsed) override {
@@ -81,6 +89,7 @@ class demoapp : public engine {
     std::shared_ptr<vertex_buffer> vertex_buffer_;
     transform model_;
     camera camera_;
+    light light_;
 
     void move_object(float elapsed) {
         delta_ += elapsed;

@@ -1,6 +1,7 @@
 #include "gl_shader.h"
 #include "util.h"
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 gl_shader::gl_shader(const char* fname) {
     auto vs_fname = std::string{fname}+".vert";
@@ -33,7 +34,7 @@ GLuint gl_shader::load_vertex(const char* vs_source) {
     if (!success) {
         glGetShaderInfoLog(id, 512, NULL, info);
         std::cerr << "Error compiling vertex shader: "<< info << std::endl;
-        throw std::runtime_error(info);
+        exit(1);
     }
 
     return id;
@@ -50,7 +51,7 @@ GLuint gl_shader::load_fragment(const char* fg_source) {
     if (!success) {
         glGetShaderInfoLog(id, 512, NULL, info);
         std::cerr << "Error compiling vertex shader: "<< info << std::endl;
-        throw std::runtime_error(info);
+        exit(1);
     }
 
     return id;
@@ -71,6 +72,16 @@ void gl_shader::create_shader(GLuint vs_id, GLuint fg_id) {
     if (!success) {
         glGetProgramInfoLog(id_, 512, NULL, info);
         std::cerr << "Error compiling vertex shader: "<< info << std::endl;
-        throw std::runtime_error(info);
+        exit(1);
     }
+}
+
+void gl_shader::set_uniform(const char* name, const glm::vec3& value) {
+    auto loc = glGetUniformLocation(id_, name);
+    glUniform3fv(loc, 1, glm::value_ptr(value));
+}
+
+void gl_shader::set_uniform(const char* name, const glm::mat4& value) {
+    auto loc = glGetUniformLocation(id_, "transform");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 }
