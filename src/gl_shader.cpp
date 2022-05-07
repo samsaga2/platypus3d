@@ -82,6 +82,11 @@ void gl_shader::set_uniform(const char* name, const glm::vec3& value) {
 }
 
 void gl_shader::set_uniform(const char* name, const glm::mat4& value) {
-    auto loc = glGetUniformLocation(id_, "transform");
+    auto loc = glGetUniformLocation(id_, name);
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void gl_shader::set_uniform(const char* name, float value)  {
+    auto loc = glGetUniformLocation(id_, name);
+    glUniform1f(loc, value);
 }

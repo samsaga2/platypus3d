@@ -38,11 +38,16 @@ void material::load_material(const char *fname) {
             std::string arg;
             ss >> arg;
             load_shader(base_path / arg);
-        } else if(command == "set_uniform_vec3") {
+        } else if(command == "uniform_vec3") {
             std::string name;
             float x, y, z;
             ss >> name >> x >> y >> z;
             set_uniform(name.c_str(), glm::vec3{x, y, z});
+        } else if(command == "uniform_float") {
+            std::string name;
+            float v;
+            ss >> name >> v;
+            set_uniform(name.c_str(), v);
         } else {
             std::cerr << "Unknown material command " << command << std::endl;
             exit(1);

@@ -9,48 +9,48 @@
 #include <GLFW/glfw3.h>
 
 static const auto vertices = std::vector<float>{
-    // vertex             // texcoords   // colors
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,
+    // vertex             // texcoords   // colors           // normals
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
+  
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
+  
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
+  
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
+  
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
+  
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f
 };
 
 class demoapp : public engine {
@@ -60,18 +60,20 @@ class demoapp : public engine {
  protected:
     void init() override {
         vertex_buffer_ = factory_.create_vertex_buffer(vertices);
-        material_ = std::make_unique<material>("../res/simple.material", factory_);
+        material_ = std::make_unique<material>("../res/phong.material", factory_);
         camera_.set_position({0.0f, 0.1f, 3.0f});
         light_.set_position({1.2f, 1.0f, 2.0f});
     }
 
     void render() override {
-        auto m = camera_.projection_matrix() * camera_.view_matrix() * model_.matrix();
-
         // select material
         material_->select();
+        material_->set_uniform("viewPos", camera_.position());
+        material_->set_uniform("lightPos", light_.position());
         material_->set_uniform("lightColor", light_.color());
-        material_->set_uniform("transform", m);
+        material_->set_uniform("projection", camera_.projection_matrix());
+        material_->set_uniform("view", camera_.view_matrix());
+        material_->set_uniform("model", model_.matrix());
 
         // render verex buffer
         vertex_buffer_->draw();
