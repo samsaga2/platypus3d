@@ -73,10 +73,14 @@ class demoapp : public engine {
         material_->set_uniform("view", camera_.view_matrix());
         material_->set_uniform("model", model_.matrix());
 
-        material_->set_uniform("light.position", light_.position());
-        material_->set_uniform("light.ambient", light_.ambient());
-        material_->set_uniform("light.diffuse", light_.diffuse());
-        material_->set_uniform("light.specular", light_.specular());
+        material_->set_uniform("point_lights[0].position", light_.position());
+        material_->set_uniform("point_lights[0].ambient", light_.ambient());
+        material_->set_uniform("point_lights[0].diffuse", light_.diffuse());
+        material_->set_uniform("point_lights[0].specular", light_.specular());
+        material_->set_uniform("point_lights[0].constant", light_.attenuation_constant());
+        material_->set_uniform("point_lights[0].linear", light_.attenuation_linear());
+        material_->set_uniform("point_lights[0].quadratic", light_.attenuation_quadratic());
+        material_->set_uniform("num_point_lights", 1);
 
         // render verex buffer
         vertex_buffer_->draw();
