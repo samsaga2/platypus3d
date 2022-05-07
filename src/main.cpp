@@ -2,7 +2,7 @@
 #include "gl_render_factory.h"
 #include "material.h"
 #include "transform.h"
-#include "light.h"
+#include "point_light.h"
 #include "camera.h"
 #include <cmath>
 
@@ -60,7 +60,7 @@ class demoapp : public engine {
  protected:
     void init() override {
         vertex_buffer_ = factory_.create_vertex_buffer(vertices);
-        material_ = std::make_unique<material>("../res/phong.material", factory_);
+        material_ = std::make_unique<material>("../res/standard.material", factory_);
         camera_.set_position({0.0f, 0.1f, 3.0f});
         light_.set_position({1.2f, 1.0f, 2.0f});
     }
@@ -69,11 +69,14 @@ class demoapp : public engine {
         // select material
         material_->select();
         material_->set_uniform("viewPos", camera_.position());
-        material_->set_uniform("lightPos", light_.position());
-        material_->set_uniform("lightColor", light_.color());
         material_->set_uniform("projection", camera_.projection_matrix());
         material_->set_uniform("view", camera_.view_matrix());
         material_->set_uniform("model", model_.matrix());
+
+        material_->set_uniform("light.position", light_.position());
+        material_->set_uniform("light.ambient", light_.ambient());
+        material_->set_uniform("light.diffuse", light_.diffuse());
+        material_->set_uniform("light.specular", light_.specular());
 
         // render verex buffer
         vertex_buffer_->draw();
@@ -91,7 +94,7 @@ class demoapp : public engine {
     std::shared_ptr<vertex_buffer> vertex_buffer_;
     transform model_;
     camera camera_;
-    light light_;
+    point_light light_;
 
     void move_object(float elapsed) {
         delta_ += elapsed;

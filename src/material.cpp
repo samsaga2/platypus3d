@@ -48,6 +48,11 @@ void material::load_material(const char *fname) {
             float v;
             ss >> name >> v;
             set_uniform(name.c_str(), v);
+        } else if(command == "uniform_int") {
+            std::string name;
+            int v;
+            ss >> name >> v;
+            set_uniform(name.c_str(), v);
         } else {
             std::cerr << "Unknown material command " << command << std::endl;
             exit(1);

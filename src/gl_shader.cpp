@@ -90,3 +90,8 @@ void gl_shader::set_uniform(const char* name, float value)  {
     auto loc = glGetUniformLocation(id_, name);
     glUniform1f(loc, value);
 }
+
+void gl_shader::set_uniform(const char* name, int value)  {
+    auto loc = glGetUniformLocation(id_, name);
+    glUniform1i(loc, value);
+}

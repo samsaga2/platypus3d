@@ -1,7 +1,0 @@
-texture container2.png
-shader phong
-uniform_vec3 objectColor         1.0 1.0 1.0
-uniform_vec3 material.ambient    0.3 0.3 0.3
-uniform_vec3 material.diffuse    0.7 0.7 0.7
-uniform_vec3 material.specular   1.0 1.0 1.0
-uniform_float material.shininess 32.0
