@@ -9,6 +9,8 @@ set(HEADERS
     src/material.h
     src/point_light.h
     src/vertex_buffer.h
+    src/mesh.h
+    src/cube_mesh.h
     src/render_device.h
     src/render_factory.h
 
@@ -28,6 +30,8 @@ set(SOURCES
 
     src/engine.cpp
     src/material.cpp
+    src/mesh.cpp
+    src/cube_mesh.cpp
 
     src/gl_shader.cpp
     src/gl_texture.cpp

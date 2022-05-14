@@ -4,54 +4,10 @@
 #include "transform.h"
 #include "point_light.h"
 #include "camera.h"
+#include "cube_mesh.h"
 #include <cmath>
 
 #include <GLFW/glfw3.h>
-
-static const auto vertices = std::vector<float>{
-    // vertex             // texcoords   // colors           // normals
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f, -1.0f,
-  
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  0.0f,  1.0f,
-  
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   -1.0f,  0.0f,  0.0f,
-  
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f,  0.0f,  0.0f,
-  
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f, -1.0f,  0.0f,
-  
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,   1.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f
-};
 
 class demoapp : public engine {
  public:
@@ -59,31 +15,32 @@ class demoapp : public engine {
 
  protected:
     void init() override {
-        vertex_buffer_ = factory_.create_vertex_buffer(vertices);
-        material_ = std::make_unique<material>("../res/standard.material", factory_);
+        auto material = std::make_shared<::material>("../res/standard.material", factory_);
+        mesh_ = std::make_unique<cube_mesh>(factory_, material);
+
         camera_.set_position({0.0f, 0.1f, 3.0f});
         light_.set_position({1.2f, 1.0f, 2.0f});
     }
 
     void render() override {
+        auto m = mesh_->material();
+        
         // select material
-        material_->select();
-        material_->set_uniform("viewPos", camera_.position());
-        material_->set_uniform("projection", camera_.projection_matrix());
-        material_->set_uniform("view", camera_.view_matrix());
-        material_->set_uniform("model", model_.matrix());
+        m->set_uniform("viewPos", camera_.position());
+        m->set_uniform("projection", camera_.projection_matrix());
+        m->set_uniform("view", camera_.view_matrix());
+        m->set_uniform("model", model_.matrix());
 
-        material_->set_uniform("point_lights[0].position", light_.position());
-        material_->set_uniform("point_lights[0].ambient", light_.ambient());
-        material_->set_uniform("point_lights[0].diffuse", light_.diffuse());
-        material_->set_uniform("point_lights[0].specular", light_.specular());
-        material_->set_uniform("point_lights[0].constant", light_.attenuation_constant());
-        material_->set_uniform("point_lights[0].linear", light_.attenuation_linear());
-        material_->set_uniform("point_lights[0].quadratic", light_.attenuation_quadratic());
-        material_->set_uniform("num_point_lights", 1);
+        m->set_uniform("point_lights[0].position", light_.position());
+        m->set_uniform("point_lights[0].ambient", light_.ambient());
+        m->set_uniform("point_lights[0].diffuse", light_.diffuse());
+        m->set_uniform("point_lights[0].specular", light_.specular());
+        m->set_uniform("point_lights[0].constant", light_.attenuation_constant());
+        m->set_uniform("point_lights[0].linear", light_.attenuation_linear());
+        m->set_uniform("point_lights[0].quadratic", light_.attenuation_quadratic());
+        m->set_uniform("num_point_lights", 1);
 
-        // render verex buffer
-        vertex_buffer_->draw();
+        mesh_->draw();
     }
 
     void update(float elapsed) override {
@@ -94,11 +51,10 @@ class demoapp : public engine {
  private:
     gl_render_factory factory_;
     float delta_{0};
-    std::unique_ptr<material> material_;
-    std::shared_ptr<vertex_buffer> vertex_buffer_;
     transform model_;
     camera camera_;
     point_light light_;
+    std::unique_ptr<mesh> mesh_;
 
     void move_object(float elapsed) {
         delta_ += elapsed;
