@@ -1,11 +1,9 @@
 #include "engine.h"
 #include "gl_render_factory.h"
-#include "material.h"
 #include "transform.h"
 #include "point_light.h"
 #include "camera.h"
-#include "cube_mesh.h"
-#include "model.h"
+#include "model_loader.h"
 #include <cmath>
 
 #include <GLFW/glfw3.h>
@@ -16,11 +14,8 @@ class demoapp : public engine {
 
  protected:
     void init() override {
-        auto material = std::make_shared<::material>();
-        material->load_material("../res/standard.material", factory_);
-        mesh_ = std::make_unique<cube_mesh>(factory_, material);
-
-        model_ = std::make_unique<model>(factory_, "../res/guitar/backpack.obj");
+        auto model_loader = ::model_loader(factory_);
+        model_ = std::make_unique<model>(model_loader.load_model("../res/guitar/backpack.obj"));
         model_->set_uniform("material.diffuse", 0);
         model_->set_uniform("material.specular", 2);
         model_->set_uniform("material.shininess", 32.0F);
@@ -46,20 +41,12 @@ class demoapp : public engine {
         m->set_uniform("num_point_lights", 1);
     }
 
-    void render_cube () {
-        auto m = mesh_->material();
-        m->select();
-        set_shader_params(m.get());
-        mesh_->draw();
-    }
-
     void render_model() {
         set_shader_params(model_.get());
         model_->draw();
     }
 
     void render() override {
-        /* render_cube(); */
         render_model();
     }
 
@@ -74,7 +61,6 @@ class demoapp : public engine {
     transform model_transform_;
     camera camera_;
     point_light light_;
-    std::unique_ptr<mesh> mesh_;
     std::unique_ptr<model> model_;
 
     void move_object(float elapsed) {

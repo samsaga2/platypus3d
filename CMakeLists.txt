@@ -4,6 +4,7 @@ set(HEADERS
     src/util.h
     src/stb_image.h
 
+    src/vertex.h
     src/shader.h
     src/texture.h
     src/material.h
@@ -14,6 +15,7 @@ set(HEADERS
     src/render_device.h
     src/render_factory.h
     src/model.h
+    src/model_loader.h
 
     src/gl_texture.h
     src/gl_shader.h
@@ -28,11 +30,13 @@ set(HEADERS
 set(SOURCES
     src/util.cpp
 
+    src/vertex.cpp
     src/engine.cpp
     src/material.cpp
     src/mesh.cpp
     src/cube_mesh.cpp
     src/model.cpp
+    src/model_loader.cpp
 
     src/gl_shader.cpp
     src/gl_texture.cpp

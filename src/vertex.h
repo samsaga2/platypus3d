@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 struct vertex {
     float x;
     float y;
@@ -13,3 +15,8 @@ struct vertex {
     float ny;
     float nz;
 };
+
+[[nodiscard]]
+auto deindex_vertices(const std::vector<vertex>& vertices,
+                      const std::vector<unsigned int>& indices)
+    -> std::vector<vertex>;
