@@ -1,27 +1,27 @@
 #include "material.h"
 #include "util.h"
+#include "render_factory.h"
 #include <fstream>
 #include <sstream>
 
 namespace fs = std::filesystem;
 
-material::material(const char *fname, render_factory& factory) : factory_(factory) {
-    load_material(fname);
+void material::set_texture(const std::shared_ptr<texture>& texture, size_t pos) {
+    if(textures_.size() <= pos)
+        textures_.resize(pos + 1);
+    textures_[pos] = texture;
 }
 
-void material::append_texture(const fs::path& fname) {
-    textures_.emplace_back(factory_.create_texture(fname.c_str()));
-}
-
-void material::load_shader(const fs::path& fname) {
-    // load vertex and fragment shaders
-    shader_ = factory_.create_shader(fname.c_str());
+void material::set_shader(const std::shared_ptr<::shader>& shader) {
+    assert(shader != nullptr);
+    shader_ = shader;
     shader_->select();
 }
 
-void material::load_material(const char *fname) {
+void material::load_material(const char *fname, render_factory& factory) {
     auto base_path = fs::path{fname}.parent_path();
 
+    auto tex_pos = 0U;
     auto f = std::ifstream(fname);
     for(std::string line; std::getline(f, line);) {
         // parse line command
@@ -33,11 +33,12 @@ void material::load_material(const char *fname) {
         if(command == "texture") {
             std::string arg;
             ss >> arg;
-            append_texture(base_path / arg);
+            auto texture = factory.create_texture((base_path / arg).string());
+            set_texture(texture, tex_pos++);
         } else if(command == "shader") {
             std::string arg;
             ss >> arg;
-            load_shader(base_path / arg);
+            set_shader(factory.create_shader((base_path / arg).string()));
         } else if(command == "uniform_vec3") {
             std::string name;
             float x, y, z;
@@ -66,5 +67,6 @@ void material::select() {
 
     // select the textures
     for(auto i = 0U; i < textures_.size(); i++)
-        textures_[i]->select(i);
+        if(textures_[i] != nullptr)
+            textures_[i]->select(i);
 }

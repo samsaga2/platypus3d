@@ -6,6 +6,8 @@
 
 class vertex_buffer;
 class material;
+class transform;
+class camera;
 
 class mesh {
  public:

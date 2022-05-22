@@ -4,10 +4,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-gl_texture::gl_texture(const char* fname) {
+gl_texture::gl_texture(std::string_view fname) {
     // load image
     int width, height, channels;
-    auto *data = stbi_load(fname, &width, &height, &channels, 0);
+    auto *data = stbi_load(std::string(fname).c_str(), &width, &height, &channels, 0);
     if(data == nullptr) {
         std::cerr << "Error loading texture " << fname << std::endl;
         exit(1);

@@ -1,18 +1,22 @@
 #pragma once
 
-#include "render_factory.h"
 #include <vector>
 #include <filesystem>
 #include <iostream>
+#include <string_view>
+#include "shader.h"
+
+class render_factory;
+class texture;
 
 class material {
 public:
-    explicit material(const char *fname, render_factory& factory);
-    
     void select();
 
-    void append_texture(const std::filesystem::path& fname);
-    void load_shader(const std::filesystem::path& fname);
+    void load_material(const char *fname, render_factory& factory);
+
+    void set_texture(const std::shared_ptr<texture>& texture, size_t pos);
+    void set_shader(const std::shared_ptr<::shader>& shader);
 
     template<typename T>
     void set_uniform(const char* name, const T& value) {
@@ -24,11 +28,7 @@ public:
         shader_->set_uniform(name, value);
     }
 
-protected:
-    void load_material(const char *fname);
-
 private:
-    render_factory& factory_;
     std::vector<std::shared_ptr<texture>> textures_;
     std::shared_ptr<::shader> shader_;
 

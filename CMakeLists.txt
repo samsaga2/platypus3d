@@ -13,11 +13,11 @@ set(HEADERS
     src/cube_mesh.h
     src/render_device.h
     src/render_factory.h
+    src/model.h
 
     src/gl_texture.h
     src/gl_shader.h
     src/gl_vertex_buffer.h
-    src/gl_indexed_vertex_buffer.h
     src/gl_render_factory.h
 
     src/transform.h
@@ -32,11 +32,11 @@ set(SOURCES
     src/material.cpp
     src/mesh.cpp
     src/cube_mesh.cpp
+    src/model.cpp
 
     src/gl_shader.cpp
     src/gl_texture.cpp
     src/gl_vertex_buffer.cpp
-    src/gl_indexed_vertex_buffer.cpp
     src/gl_render_device.cpp
     src/gl_render_factory.cpp
 
@@ -50,7 +50,7 @@ target_compile_features(platypus PRIVATE cxx_std_17)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
-target_link_libraries(platypus glfw GL)
+target_link_libraries(platypus glfw GL assimp)
 target_compile_definitions(platypus PUBLIC GL_GLEXT_PROTOTYPES)
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)

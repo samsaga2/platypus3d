@@ -2,10 +2,11 @@
 
 #include "shader.h"
 #include <GL/gl.h>
+#include <string_view>
 
 class gl_shader : public shader {
 public:
-    explicit gl_shader(const char* fname);
+    explicit gl_shader(std::string_view fname);
     ~gl_shader();
 
     void select() override;

@@ -5,6 +5,7 @@
 #include "point_light.h"
 #include "camera.h"
 #include "cube_mesh.h"
+#include "model.h"
 #include <cmath>
 
 #include <GLFW/glfw3.h>
@@ -15,22 +16,26 @@ class demoapp : public engine {
 
  protected:
     void init() override {
-        auto material = std::make_shared<::material>("../res/standard.material", factory_);
+        auto material = std::make_shared<::material>();
+        material->load_material("../res/standard.material", factory_);
         mesh_ = std::make_unique<cube_mesh>(factory_, material);
 
-        camera_.set_position({0.0f, 0.1f, 3.0f});
-        light_.set_position({1.2f, 1.0f, 2.0f});
+        model_ = std::make_unique<model>(factory_, "../res/guitar/backpack.obj");
+        model_->set_uniform("material.diffuse", 0);
+        model_->set_uniform("material.specular", 2);
+        model_->set_uniform("material.shininess", 32.0F);
+
+        camera_.set_position({0.0F, 0.1F, 6.0F});
+        light_.set_position({1.2F, 1.0F, 2.0F});
+        light_.set_ambient({0.5F, 0.5F, 0.5F});
     }
 
-    void render() override {
-        auto m = mesh_->material();
-        
-        // select material
+    template<typename T>
+    void set_shader_params(T* m) {
         m->set_uniform("viewPos", camera_.position());
         m->set_uniform("projection", camera_.projection_matrix());
         m->set_uniform("view", camera_.view_matrix());
-        m->set_uniform("model", model_.matrix());
-
+        m->set_uniform("model", model_transform_.matrix());
         m->set_uniform("point_lights[0].position", light_.position());
         m->set_uniform("point_lights[0].ambient", light_.ambient());
         m->set_uniform("point_lights[0].diffuse", light_.diffuse());
@@ -39,8 +44,23 @@ class demoapp : public engine {
         m->set_uniform("point_lights[0].linear", light_.attenuation_linear());
         m->set_uniform("point_lights[0].quadratic", light_.attenuation_quadratic());
         m->set_uniform("num_point_lights", 1);
+    }
 
+    void render_cube () {
+        auto m = mesh_->material();
+        m->select();
+        set_shader_params(m.get());
         mesh_->draw();
+    }
+
+    void render_model() {
+        set_shader_params(model_.get());
+        model_->draw();
+    }
+
+    void render() override {
+        /* render_cube(); */
+        render_model();
     }
 
     void update(float elapsed) override {
@@ -51,16 +71,17 @@ class demoapp : public engine {
  private:
     gl_render_factory factory_;
     float delta_{0};
-    transform model_;
+    transform model_transform_;
     camera camera_;
     point_light light_;
     std::unique_ptr<mesh> mesh_;
+    std::unique_ptr<model> model_;
 
     void move_object(float elapsed) {
         delta_ += elapsed;
 
         auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 2.0, 1});
-        model_.set_orientation(ori);
+        model_transform_.set_orientation(ori);
     }
 
     void move_camera(float elapsed) {
