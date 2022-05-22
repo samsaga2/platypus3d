@@ -1,3 +1,8 @@
+What is this shit?
+==================
+
+Hobby 3d engine. Only for learning purpose.
+
 Build (linux)
 ==================
 
