@@ -10,10 +10,12 @@ public:
     ~gl_shader();
 
     void select() override;
+
     void set_uniform(const char* name, const glm::vec3& value) override;
     void set_uniform(const char* name, const glm::mat4& value) override;
     void set_uniform(const char* name, float value) override;
     void set_uniform(const char* name, int value) override;
+    void set_uniform_block(const char* name, int block_index) override;
 
 private:
     GLuint id_;

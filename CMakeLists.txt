@@ -18,6 +18,7 @@ set(HEADERS
     src/model_loader.h
 
     src/gl_texture.h
+    src/gl_uniform_block.h
     src/gl_shader.h
     src/gl_vertex_buffer.h
     src/gl_render_factory.h
@@ -38,6 +39,7 @@ set(SOURCES
     src/model.cpp
     src/model_loader.cpp
 
+    src/gl_uniform_block.cpp
     src/gl_shader.cpp
     src/gl_texture.cpp
     src/gl_vertex_buffer.cpp

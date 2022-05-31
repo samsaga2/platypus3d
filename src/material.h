@@ -28,6 +28,8 @@ public:
         shader_->set_uniform(name, value);
     }
 
+    void set_uniform_block(const char* name, int block_index);
+
 private:
     std::vector<std::shared_ptr<texture>> textures_;
     std::shared_ptr<::shader> shader_;

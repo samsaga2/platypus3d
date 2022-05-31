@@ -16,6 +16,8 @@ public:
         }
     }
 
+    void set_uniform_block(const char* name, int block_index);
+
     void draw();
 
 private:

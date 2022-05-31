@@ -70,3 +70,11 @@ void material::select() {
         if(textures_[i] != nullptr)
             textures_[i]->select(i);
 }
+
+void material::set_uniform_block(const char* name, int block_index) {
+    if(shader_ == nullptr) {
+        std::cerr << "Cannot set uniform block, no shader loaded yet" << std::endl;
+        exit(1);
+    }
+    shader_->set_uniform_block(name, block_index);
+}

@@ -8,3 +8,10 @@ void model::draw() {
         mesh.draw();
     }
 }
+
+void model::set_uniform_block(const char* name, int block_index) {
+    for(auto& mesh : meshes_) {
+        mesh.material()->select();
+        mesh.material()->set_uniform_block(name, block_index);
+    }
+}

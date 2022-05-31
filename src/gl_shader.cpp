@@ -95,3 +95,8 @@ void gl_shader::set_uniform(const char* name, int value)  {
     auto loc = glGetUniformLocation(id_, name);
     glUniform1i(loc, value);
 }
+
+void gl_shader::set_uniform_block(const char* name, int block_index) {
+    auto index = glGetUniformBlockIndex(id_, name);   
+    glUniformBlockBinding(id_, index, block_index);
+}
