@@ -1,53 +1,38 @@
 cmake_minimum_required(VERSION 3.22)
 
 set(HEADERS
-    src/util.h
-    src/stb_image.h
-
-    src/vertex.h
-    src/shader.h
-    src/texture.h
-    src/material.h
-    src/point_light.h
-    src/vertex_buffer.h
-    src/mesh.h
-    src/cube_mesh.h
-    src/render_device.h
-    src/render_factory.h
-    src/model.h
-    src/model_loader.h
-
-    src/gl_texture.h
-    src/gl_uniform_block.h
-    src/gl_shader.h
-    src/gl_vertex_buffer.h
-    src/gl_render_factory.h
-
-    src/transform.h
     src/camera.h
     src/engine.h
+    src/material.h
+    src/mesh.h
+    src/model.h
+    src/model_loader.h
+    src/point_light.h
+    src/shader.h
+    src/stb_image.h
+    src/texture.h
+    src/transform.h
+    src/uniform_block.h
+    src/util.h
+    src/vertex_buffer.h
+    src/vertex.h
 )
 
 set(SOURCES
-    src/util.cpp
-
-    src/vertex.cpp
+    src/camera.cpp
     src/engine.cpp
+    src/main.cpp
     src/material.cpp
     src/mesh.cpp
-    src/cube_mesh.cpp
     src/model.cpp
     src/model_loader.cpp
-
-    src/gl_uniform_block.cpp
-    src/gl_shader.cpp
-    src/gl_texture.cpp
-    src/gl_vertex_buffer.cpp
-    src/gl_render_device.cpp
-    src/gl_render_factory.cpp
-
-    src/camera.cpp
-    src/main.cpp
+    src/render_device.cpp
+    src/shader.cpp
+    src/texture.cpp
+    src/uniform_block.cpp
+    src/util.cpp
+    src/vertex_buffer.cpp
+    src/vertex.cpp
 )
 
 project(platypus)

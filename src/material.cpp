@@ -1,12 +1,11 @@
 #include "material.h"
 #include "util.h"
-#include "render_factory.h"
 #include <fstream>
 #include <sstream>
 
 namespace fs = std::filesystem;
 
-void material::set_texture(const std::shared_ptr<texture>& texture, size_t pos) {
+void material::set_texture(const std::shared_ptr<::texture>& texture, size_t pos) {
     if(textures_.size() <= pos)
         textures_.resize(pos + 1);
     textures_[pos] = texture;
@@ -18,7 +17,7 @@ void material::set_shader(const std::shared_ptr<::shader>& shader) {
     shader_->select();
 }
 
-void material::load_material(const char *fname, render_factory& factory) {
+void material::load_material(const char *fname) {
     auto base_path = fs::path{fname}.parent_path();
 
     auto tex_pos = 0U;
@@ -33,12 +32,12 @@ void material::load_material(const char *fname, render_factory& factory) {
         if(command == "texture") {
             std::string arg;
             ss >> arg;
-            auto texture = factory.create_texture((base_path / arg).string());
+            auto texture = std::make_shared<::texture>((base_path / arg).string());
             set_texture(texture, tex_pos++);
         } else if(command == "shader") {
             std::string arg;
             ss >> arg;
-            set_shader(factory.create_shader((base_path / arg).string()));
+            set_shader(std::make_shared<::shader>((base_path / arg).string()));
         } else if(command == "uniform_vec3") {
             std::string name;
             float x, y, z;

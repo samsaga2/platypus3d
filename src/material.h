@@ -5,17 +5,15 @@
 #include <iostream>
 #include <string_view>
 #include "shader.h"
-
-class render_factory;
-class texture;
+#include "texture.h"
 
 class material {
 public:
     void select();
 
-    void load_material(const char *fname, render_factory& factory);
+    void load_material(const char *fname);
 
-    void set_texture(const std::shared_ptr<texture>& texture, size_t pos);
+    void set_texture(const std::shared_ptr<::texture>& texture, size_t pos);
     void set_shader(const std::shared_ptr<::shader>& shader);
 
     template<typename T>
@@ -32,6 +30,5 @@ public:
 
 private:
     std::vector<std::shared_ptr<texture>> textures_;
-    std::shared_ptr<::shader> shader_;
-
+    std::shared_ptr<shader> shader_;
 };

@@ -1,9 +1,9 @@
-#include "gl_render_device.h"
+#include "render_device.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <chrono>
 
-void gl_render_device::create_window(int width, int height)  {
+void render_device::create_window(int width, int height)  {
     if (!glfwInit()) {
         std::cerr << "Error initializing glfw" << std::endl;
         quit();
@@ -19,23 +19,23 @@ void gl_render_device::create_window(int width, int height)  {
 
     glfwMakeContextCurrent(window_);
     glfwSetFramebufferSizeCallback(window_,
-                                   &gl_render_device::framebuffer_size_callback);
+                                   &render_device::framebuffer_size_callback);
 
     glEnable(GL_DEPTH_TEST);
 }
 
-gl_render_device::~gl_render_device() {
+render_device::~render_device() {
     if (window_ != nullptr)
         glfwDestroyWindow(window_);
     glfwTerminate();
 }
 
-void gl_render_device::framebuffer_size_callback(GLFWwindow* window,
+void render_device::framebuffer_size_callback(GLFWwindow* window,
                                                  int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void gl_render_device::run_loop(std::function<void(float)> update_fn) {
+void render_device::run_loop(std::function<void(float)> update_fn) {
     auto prev_time = std::chrono::high_resolution_clock::now();
     while (!glfwWindowShouldClose(window_)) {
         // calc elapsed time
@@ -58,10 +58,10 @@ void gl_render_device::run_loop(std::function<void(float)> update_fn) {
     }
 }
 
-void gl_render_device::quit() {
+void render_device::quit() {
     glfwSetWindowShouldClose(window_, GL_TRUE);
 }
 
-auto gl_render_device::is_key_down(int key) -> bool {
+auto render_device::is_key_down(int key) -> bool {
     return glfwGetKey(window_, key);
 }

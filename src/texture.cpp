@@ -1,10 +1,10 @@
-#include "gl_texture.h"
+#include "texture.h"
 #include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-gl_texture::gl_texture(std::string_view fname) {
+texture::texture(std::string_view fname) {
     // load image
     int width, height, channels;
     auto *data = stbi_load(std::string(fname).c_str(), &width, &height, &channels, 0);
@@ -34,11 +34,11 @@ gl_texture::gl_texture(std::string_view fname) {
     stbi_image_free(data);
 }
 
-gl_texture::~gl_texture() {
+texture::~texture() {
     glDeleteTextures(1, &id_);
 }
 
-void gl_texture::select(unsigned int slot_index) {
+void texture::select(unsigned int slot_index) {
     // bind the texture
     glActiveTexture(GL_TEXTURE0 + slot_index);
     glBindTexture(GL_TEXTURE_2D, id_);

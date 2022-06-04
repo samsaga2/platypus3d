@@ -1,17 +1,13 @@
 #include "model_loader.h"
-#include "render_factory.h"
-#include "texture.h"
 #include "mesh.h"
 #include "material.h"
+#include "vertex_buffer.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <iostream>
 
 namespace fs = std::filesystem;
-
-model_loader::model_loader(render_factory& factory) : factory_(factory) {
-}
 
 auto model_loader::load_model(std::string_view fname) -> model {
     auto import = Assimp::Importer{};
@@ -43,7 +39,7 @@ void model_loader::process_node(std::vector<mesh>& meshes, aiNode *node, const a
 }
 
 auto model_loader::process_vertices(aiMesh *mesh) const
-    -> std::shared_ptr<::vertex_buffer> {
+    -> std::shared_ptr<vertex_buffer> {
     auto vertices = std::vector<vertex>{};
     for(auto i = 0U; i < mesh->mNumVertices; i++) {
         auto v = vertex{};
@@ -94,7 +90,7 @@ auto model_loader::process_vertices(aiMesh *mesh) const
     }
 
     auto vertices_deindexed = deindex_vertices(vertices, indices);
-    return factory_.create_vertex_buffer(vertices_deindexed);
+    return std::make_shared<vertex_buffer>(vertices_deindexed);
 }
 
 auto model_loader::process_mesh(aiMesh *mesh, const aiScene *scene,
@@ -104,7 +100,7 @@ auto model_loader::process_mesh(aiMesh *mesh, const aiScene *scene,
 
     // material
     auto material = std::make_shared<::material>();
-    material->set_shader(factory_.create_shader("../res/standard"));
+    material->set_shader(std::make_shared<shader>("../res/standard"));
 
     // textures
     auto* scene_material = scene->mMaterials[mesh->mMaterialIndex];
@@ -144,7 +140,7 @@ auto model_loader::process_textures(::material* mat, aiMaterial *scene_mat,
         if(auto it = textures_.find(full_name); it != textures_.end()) {
             texture = it->second;
         } else {
-            texture = factory_.create_texture(full_name.string());
+            texture = std::make_shared<::texture>(full_name.string());
             textures_.emplace(full_name, texture);
         }
         mat->set_texture(texture, tex_pos);

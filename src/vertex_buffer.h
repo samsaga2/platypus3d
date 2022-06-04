@@ -1,10 +1,18 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include <GL/gl.h>
+#include <vector>
+#include "vertex.h"
 
 class vertex_buffer {
 public:
-    virtual ~vertex_buffer() = default;
-    
-    virtual void draw() = 0;
+    explicit vertex_buffer(const std::vector<vertex> &vertices);
+    ~vertex_buffer();
+
+    void draw();
+
+private:
+    GLuint vbo_;
+    GLuint vao_;
+    GLsizei size_;
 };

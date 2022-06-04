@@ -1,15 +1,26 @@
 #pragma once
 
+#include <GL/gl.h>
 #include <glm/glm.hpp>
+#include <string_view>
 
 class shader {
 public:
-    virtual ~shader() = default;
+    explicit shader(std::string_view fname);
+    ~shader();
 
-    virtual void select() = 0;
-    virtual void set_uniform(const char* name, const glm::vec3& value) = 0;
-    virtual void set_uniform(const char* name, const glm::mat4& value) = 0;
-    virtual void set_uniform(const char* name, float value) = 0;
-    virtual void set_uniform(const char* name, int value) = 0;
-    virtual void set_uniform_block(const char* name, int block_index) = 0;
+    void select();
+
+    void set_uniform(const char* name, const glm::vec3& value);
+    void set_uniform(const char* name, const glm::mat4& value);
+    void set_uniform(const char* name, float value);
+    void set_uniform(const char* name, int value);
+    void set_uniform_block(const char* name, int block_index);
+
+private:
+    GLuint id_;
+
+    GLuint load_vertex(const char* vs_source);
+    GLuint load_fragment(const char* fs_source);
+    void create_shader(GLuint vs_id, GLuint fs_id);
 };

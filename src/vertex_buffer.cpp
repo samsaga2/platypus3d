@@ -1,6 +1,7 @@
-#include "gl_vertex_buffer.h"
+#include "vertex_buffer.h"
 
-gl_vertex_buffer::gl_vertex_buffer(const std::vector<vertex> &vertices) : size_(vertices.size()) {
+vertex_buffer::vertex_buffer(const std::vector<vertex> &vertices)
+: size_(vertices.size()) {
     // create vertex array object
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -28,12 +29,12 @@ gl_vertex_buffer::gl_vertex_buffer(const std::vector<vertex> &vertices) : size_(
     glEnableVertexAttribArray(3);
 }
 
-gl_vertex_buffer::~gl_vertex_buffer() {
+vertex_buffer::~vertex_buffer() {
     glDeleteVertexArrays(1, &vao_);
     glDeleteBuffers(1, &vbo_);
 }
 
-void gl_vertex_buffer::draw() {
+void vertex_buffer::draw() {
     glBindVertexArray(vao_);
     glDrawArrays(GL_TRIANGLES, 0, size_);
 }

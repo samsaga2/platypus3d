@@ -1,8 +1,15 @@
 #pragma once
 
+#include <GL/gl.h>
+#include <string_view>
+
 class texture {
  public:
-    virtual ~texture() = default;
+    explicit texture(std::string_view fname);
+    ~texture();
 
-    virtual void select(unsigned int slot_index) = 0;
+    void select(unsigned int slot_index);
+
+ private:
+    GLuint id_;
 };

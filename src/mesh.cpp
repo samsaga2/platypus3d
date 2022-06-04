@@ -1,8 +1,6 @@
 #include "mesh.h"
 #include "vertex_buffer.h"
 #include "material.h"
-#include "camera.h"
-#include "transform.h"
 
 mesh::mesh(std::shared_ptr<::vertex_buffer> vertex_buffer,
            std::shared_ptr<::material> material)

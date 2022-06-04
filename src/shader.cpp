@@ -1,9 +1,9 @@
-#include "gl_shader.h"
+#include "shader.h"
 #include "util.h"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-gl_shader::gl_shader(std::string_view fname) {
+shader::shader(std::string_view fname) {
     auto vs_fname = std::string{fname}+".vert";
     auto vs_source = read_whole_file(vs_fname.c_str());
     auto vs_id = load_vertex(vs_source.c_str());
@@ -15,15 +15,15 @@ gl_shader::gl_shader(std::string_view fname) {
     create_shader(vs_id, fs_id);
 }
 
-gl_shader::~gl_shader() {
+shader::~shader() {
     glDeleteProgram(id_);
 }
 
-void gl_shader::select() {
+void shader::select() {
     glUseProgram(id_);
 }
 
-GLuint gl_shader::load_vertex(const char* vs_source) {
+GLuint shader::load_vertex(const char* vs_source) {
     auto id = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(id, 1, &vs_source, nullptr);
     glCompileShader(id);
@@ -40,7 +40,7 @@ GLuint gl_shader::load_vertex(const char* vs_source) {
     return id;
 }
 
-GLuint gl_shader::load_fragment(const char* fg_source) {
+GLuint shader::load_fragment(const char* fg_source) {
     auto id = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(id, 1, &fg_source, NULL);
     glCompileShader(id);
@@ -57,7 +57,7 @@ GLuint gl_shader::load_fragment(const char* fg_source) {
     return id;
 }
 
-void gl_shader::create_shader(GLuint vs_id, GLuint fg_id) {
+void shader::create_shader(GLuint vs_id, GLuint fg_id) {
     id_ = glCreateProgram();
     glAttachShader(id_, vs_id);
     glAttachShader(id_, fg_id);
@@ -76,27 +76,27 @@ void gl_shader::create_shader(GLuint vs_id, GLuint fg_id) {
     }
 }
 
-void gl_shader::set_uniform(const char* name, const glm::vec3& value) {
+void shader::set_uniform(const char* name, const glm::vec3& value) {
     auto loc = glGetUniformLocation(id_, name);
     glUniform3fv(loc, 1, glm::value_ptr(value));
 }
 
-void gl_shader::set_uniform(const char* name, const glm::mat4& value) {
+void shader::set_uniform(const char* name, const glm::mat4& value) {
     auto loc = glGetUniformLocation(id_, name);
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void gl_shader::set_uniform(const char* name, float value)  {
+void shader::set_uniform(const char* name, float value)  {
     auto loc = glGetUniformLocation(id_, name);
     glUniform1f(loc, value);
 }
 
-void gl_shader::set_uniform(const char* name, int value)  {
+void shader::set_uniform(const char* name, int value)  {
     auto loc = glGetUniformLocation(id_, name);
     glUniform1i(loc, value);
 }
 
-void gl_shader::set_uniform_block(const char* name, int block_index) {
+void shader::set_uniform_block(const char* name, int block_index) {
     auto index = glGetUniformBlockIndex(id_, name);   
     glUniformBlockBinding(id_, index, block_index);
 }
