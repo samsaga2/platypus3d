@@ -13,8 +13,10 @@ out vec3 VertColor;
 uniform mat4 model;
 
 layout (std140) uniform Matrices {
-    mat4 projection;
-    mat4 view;
+    vec3 view_pos;   // 0
+    mat4 projection; // 16
+    mat4 view;       // 80
+                     // 144
 };
 
 void main()

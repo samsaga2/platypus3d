@@ -10,11 +10,6 @@
 #include <GLFW/glfw3.h>
 
 class demoapp : public engine {
-    struct matrices_block_data {
-        glm::mat4 projection;
-        glm::mat4 view;
-    } __attribute__((aligned(16)));
-
  protected:
     void init() override {
         create_model();
@@ -57,27 +52,30 @@ class demoapp : public engine {
     }
 
     void setup_uniform_block() {
-        matrices_block_ = std::make_unique<uniform_block>(0, sizeof(matrices_block_data));
-        matrices_block_->set_data(offsetof(struct matrices_block_data, projection), camera_.projection_matrix());
+        matrices_block_ = std::make_unique<uniform_block>(0, 144);
+        matrices_block_->set_data(16, camera_.projection_matrix());
         model_->set_uniform_block("Matrices", matrices_block_->binding_point());
+
+        lights_block_ = std::make_unique<uniform_block>(1, 88);
+        model_->set_uniform_block("Lights", lights_block_->binding_point());
     }
 
     void update_uniform_block() {
-        matrices_block_->set_data(offsetof(struct matrices_block_data, view),
-                                  camera_.view_matrix());
+        matrices_block_->set_data(0, camera_.position());
+        matrices_block_->set_data(80, camera_.view_matrix());
+
+        lights_block_->set_data(0, 1);
+        lights_block_->set_data(16, light_.position());
+        lights_block_->set_data(32, light_.ambient());
+        lights_block_->set_data(48, light_.diffuse());
+        lights_block_->set_data(64, light_.specular());
+        lights_block_->set_data(76, light_.attenuation_constant());
+        lights_block_->set_data(80, light_.attenuation_linear());
+        lights_block_->set_data(84, light_.attenuation_quadratic());
     }
 
     void update_model_shader() {
-        model_->set_uniform("viewPos", camera_.position());
         model_->set_uniform("model", model_transform_.matrix());
-        model_->set_uniform("num_point_lights", 1);
-        model_->set_uniform("point_lights[0].position", light_.position());
-        model_->set_uniform("point_lights[0].ambient", light_.ambient());
-        model_->set_uniform("point_lights[0].diffuse", light_.diffuse());
-        model_->set_uniform("point_lights[0].specular", light_.specular());
-        model_->set_uniform("point_lights[0].constant", light_.attenuation_constant());
-        model_->set_uniform("point_lights[0].linear", light_.attenuation_linear());
-        model_->set_uniform("point_lights[0].quadratic", light_.attenuation_quadratic());
     }
 
     void move_object(float elapsed) {
