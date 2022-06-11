@@ -1,7 +1,13 @@
 #include "vertex_buffer.h"
+#include "vertex_format.h"
 
-vertex_buffer::vertex_buffer(const std::vector<vertex> &vertices)
-: size_(vertices.size()) {
+vertex_buffer::vertex_buffer(const vertex_format& format,
+                             const void* vertices_data,
+                             size_t vertices_count)
+: vertices_count_(vertices_count) {
+    auto vertex_size = format.total_size() * sizeof(float);
+    auto data_size = vertex_size * vertices_count;
+        
     // create vertex array object
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
@@ -9,24 +15,16 @@ vertex_buffer::vertex_buffer(const std::vector<vertex> &vertices)
     // create vertex buffer object
     glGenBuffers(1, &vbo_);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex),
-                 vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, data_size, vertices_data, GL_STATIC_DRAW);
 
-    // assign vertices to the shader location 0
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)0);
-    glEnableVertexAttribArray(0);
-
-    // assign texcoords to the shader location 1
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // assign colors to the shader location 2
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(5 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    // assign normals to the shader location 3
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void *)(8 * sizeof(float)));
-    glEnableVertexAttribArray(3);
+    auto offset = 0U;
+    for(auto i = 0U; i < format.length(); i++) {
+        auto element_size = format.element_size(i);
+        glVertexAttribPointer(i, element_size, GL_FLOAT, GL_FALSE,
+                              vertex_size, reinterpret_cast<void *>(offset));
+        glEnableVertexAttribArray(i);
+        offset += element_size * sizeof(float);
+    }
 }
 
 vertex_buffer::~vertex_buffer() {
@@ -36,5 +34,5 @@ vertex_buffer::~vertex_buffer() {
 
 void vertex_buffer::draw() {
     glBindVertexArray(vao_);
-    glDrawArrays(GL_TRIANGLES, 0, size_);
+    glDrawArrays(GL_TRIANGLES, 0, vertices_count_);
 }

@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "material.h"
 #include "vertex_buffer.h"
+#include "vertex_format.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -89,8 +90,15 @@ auto model_loader::process_vertices(aiMesh *mesh) const
             indices.push_back(face.mIndices[j]);
     }
 
+    auto format = vertex_format{};
+    format.add_element(vertex_element::position);
+    format.add_element(vertex_element::texcoord);
+    format.add_element(vertex_element::colors);
+    format.add_element(vertex_element::normals);
+
     auto vertices_deindexed = deindex_vertices(vertices, indices);
-    return std::make_shared<vertex_buffer>(vertices_deindexed);
+
+    return std::make_shared<vertex_buffer>(format, vertices_deindexed.data(), vertices_deindexed.size());
 }
 
 auto model_loader::process_mesh(aiMesh *mesh, const aiScene *scene,
@@ -145,4 +153,19 @@ auto model_loader::process_textures(::material* mat, aiMaterial *scene_mat,
         }
         mat->set_texture(texture, tex_pos);
     }
+}
+
+auto model_loader::deindex_vertices(const std::vector<vertex>& vertices,
+                                    const std::vector<unsigned int>& indices)
+    const -> std::vector<vertex> {
+    auto vertices_deindexed = std::vector<vertex>{};
+    for(auto i = 0U; i < indices.size(); i+= 3U) {
+        auto& v1 = vertices[indices[i+0]];
+        auto& v2 = vertices[indices[i+1]];
+        auto& v3 = vertices[indices[i+2]];
+        vertices_deindexed.emplace_back(v1);
+        vertices_deindexed.emplace_back(v2);
+        vertices_deindexed.emplace_back(v3);
+    }
+    return vertices_deindexed;
 }

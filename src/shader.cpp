@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-shader::shader(std::string_view fname) {
+shader::shader(const std::string& fname) {
     auto vs_fname = std::string{fname}+".vert";
     auto vs_source = read_whole_file(vs_fname.c_str());
     auto vs_id = load_vertex(vs_source.c_str());

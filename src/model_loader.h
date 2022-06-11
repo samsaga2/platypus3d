@@ -14,6 +14,25 @@ class model_loader {
     auto load_model(std::string_view fname) -> model;
 
  private:
+    struct vertex {
+        float x;
+        float y;
+        float z;
+        float u;
+        float v;
+        float r;
+        float g;
+        float b;
+        float nx;
+        float ny;
+        float nz;
+    };
+
+    [[nodiscard]]
+    auto deindex_vertices(const std::vector<vertex>& vertices,
+                          const std::vector<unsigned int>& indices)
+        const -> std::vector<vertex>;
+
     std::map<std::filesystem::path, std::shared_ptr<texture>> textures_;
     
     void process_node(std::vector<mesh>& meshes,
@@ -23,6 +42,7 @@ class model_loader {
     [[nodiscard]]
     auto process_vertices(aiMesh *mesh) const
         -> std::shared_ptr<vertex_buffer>;
+
     void process_textures(material* mat, aiMaterial *scene_mat,
                           aiTextureType type,
                           const std::filesystem::path& base_path);

@@ -2,11 +2,11 @@
 
 #include <GL/gl.h>
 #include <glm/glm.hpp>
-#include <string_view>
+#include <string>
 
 class shader {
 public:
-    explicit shader(std::string_view fname);
+    explicit shader(const std::string& fname);
     ~shader();
 
     void select();

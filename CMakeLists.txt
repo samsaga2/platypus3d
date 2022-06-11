@@ -14,8 +14,8 @@ set(HEADERS
     src/transform.h
     src/uniform_block.h
     src/util.h
+    src/vertex_format.h
     src/vertex_buffer.h
-    src/vertex.h
 )
 
 set(SOURCES
@@ -31,8 +31,8 @@ set(SOURCES
     src/texture.cpp
     src/uniform_block.cpp
     src/util.cpp
+    src/vertex_format.cpp
     src/vertex_buffer.cpp
-    src/vertex.cpp
 )
 
 project(platypus)
