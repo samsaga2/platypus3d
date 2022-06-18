@@ -6,9 +6,11 @@
 
 class shader {
 public:
-    explicit shader(const std::string& fname);
+    explicit shader();
     ~shader();
 
+    void load_vertex_shader(const std::string& fname);
+    void load_fragment_shader(const std::string& fname);
     void select();
 
     void set_uniform(const char* name, const glm::vec3& value);
@@ -22,5 +24,4 @@ private:
 
     GLuint load_vertex(const char* vs_source);
     GLuint load_fragment(const char* fs_source);
-    void create_shader(GLuint vs_id, GLuint fs_id);
 };

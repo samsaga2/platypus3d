@@ -104,11 +104,17 @@ auto model_loader::process_vertices(aiMesh *mesh) const
 auto model_loader::process_mesh(aiMesh *mesh, const aiScene *scene,
                                 const fs::path& base_path)
     -> ::mesh {
+    // vertices
     auto vertices = process_vertices(mesh);
+
+    // shader
+    auto shader = std::make_shared<::shader>();
+    shader->load_vertex_shader("../res/standard.vert");
+    shader->load_fragment_shader("../res/standard.frag");
 
     // material
     auto material = std::make_shared<::material>();
-    material->set_shader(std::make_shared<shader>("../res/standard"));
+    material->set_shader(shader);
 
     // textures
     auto* scene_material = scene->mMaterials[mesh->mMaterialIndex];

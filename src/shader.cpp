@@ -1,22 +1,29 @@
 #include "shader.h"
 #include "util.h"
-#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-shader::shader(const std::string& fname) {
-    auto vs_fname = std::string{fname}+".vert";
-    auto vs_source = read_whole_file(vs_fname.c_str());
-    auto vs_id = load_vertex(vs_source.c_str());
-
-    auto fs_fname = std::string{fname}+".frag";
-    auto fs_source = read_whole_file(fs_fname.c_str());
-    auto fs_id = load_fragment(fs_source.c_str());
-
-    create_shader(vs_id, fs_id);
+shader::shader() {
+    id_ = glCreateProgram();
 }
 
 shader::~shader() {
     glDeleteProgram(id_);
+}
+
+void shader::load_vertex_shader(const std::string& fname) {
+    auto vs_source = read_whole_file(fname.c_str());
+    auto vs_id = load_vertex(vs_source.c_str());
+    glAttachShader(id_, vs_id);
+    glDeleteShader(vs_id);
+    glLinkProgram(id_);
+}
+
+void shader::load_fragment_shader(const std::string& fname) {
+    auto fs_source = read_whole_file(fname.c_str());
+    auto fs_id = load_fragment(fs_source.c_str());
+    glAttachShader(id_, fs_id);
+    glDeleteShader(fs_id);
+    glLinkProgram(id_);
 }
 
 void shader::select() {
@@ -55,25 +62,6 @@ GLuint shader::load_fragment(const char* fg_source) {
     }
 
     return id;
-}
-
-void shader::create_shader(GLuint vs_id, GLuint fg_id) {
-    id_ = glCreateProgram();
-    glAttachShader(id_, vs_id);
-    glAttachShader(id_, fg_id);
-    glLinkProgram(id_);
-    glDeleteShader(vs_id);
-    glDeleteShader(fg_id);
-
-    // check for linking errors
-    int success;
-    char info[512];
-    glGetProgramiv(id_, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(id_, 512, NULL, info);
-        std::cerr << "Error compiling vertex shader: "<< info << std::endl;
-        exit(1);
-    }
 }
 
 void shader::set_uniform(const char* name, const glm::vec3& value) {
