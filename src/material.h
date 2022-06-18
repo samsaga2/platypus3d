@@ -11,8 +11,6 @@ class material {
 public:
     void select();
 
-    void load_material(const char *fname);
-
     void set_texture(const std::shared_ptr<::texture>& texture, size_t pos);
     void set_shader(const std::shared_ptr<::shader>& shader);
 

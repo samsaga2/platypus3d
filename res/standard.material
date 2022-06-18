@@ -1,6 +1,0 @@
-shader standard
-texture container2.png
-texture container2_specular.png
-uniform_int   material.diffuse   0
-uniform_int   material.specular  1
-uniform_float material.shininess 32.0
