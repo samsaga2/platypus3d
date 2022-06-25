@@ -1,9 +1,9 @@
 #include "render_device.h"
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
-void render_device::create_window(int width, int height)  {
+void render_device::create_window(int width, int height) {
     if (!glfwInit()) {
         std::cerr << "Error initializing glfw" << std::endl;
         quit();
@@ -30,8 +30,8 @@ render_device::~render_device() {
     glfwTerminate();
 }
 
-void render_device::framebuffer_size_callback(GLFWwindow* window,
-                                                 int width, int height) {
+void render_device::framebuffer_size_callback(GLFWwindow* window, int width,
+                                              int height) {
     glViewport(0, 0, width, height);
 }
 
@@ -40,7 +40,10 @@ void render_device::run_loop(std::function<void(float)> update_fn) {
     while (!glfwWindowShouldClose(window_)) {
         // calc elapsed time
         auto time = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(time - prev_time).count() / 1000.0f;
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                           time - prev_time)
+                           .count() /
+                       1000.0f;
         prev_time = time;
 
         // escape key quit
@@ -58,9 +61,7 @@ void render_device::run_loop(std::function<void(float)> update_fn) {
     }
 }
 
-void render_device::quit() {
-    glfwSetWindowShouldClose(window_, GL_TRUE);
-}
+void render_device::quit() { glfwSetWindowShouldClose(window_, GL_TRUE); }
 
 auto render_device::is_key_down(int key) -> bool {
     return glfwGetKey(window_, key);

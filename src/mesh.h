@@ -8,16 +8,16 @@ class vertex_buffer;
 class material;
 
 class mesh {
- public:
+public:
     explicit mesh(std::shared_ptr<::vertex_buffer> vertex_buffer,
                   std::shared_ptr<::material> material);
 
     [[nodiscard]] auto vertex_buffer() const { return vertex_buffer_; }
-    [[nodiscard]] auto material() const { return material_;}
+    [[nodiscard]] auto material() const { return material_; }
 
     void draw();
 
- private:
+private:
     std::shared_ptr<::vertex_buffer> vertex_buffer_;
     std::shared_ptr<::material> material_;
 };

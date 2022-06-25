@@ -1,9 +1,9 @@
 #include "uniform_block.h"
-#include <glm/gtc/type_ptr.hpp>
 #include <cstdio>
+#include <glm/gtc/type_ptr.hpp>
 
 uniform_block::uniform_block(GLuint binding_point, GLsizeiptr size)
-: binding_point_(binding_point) {
+    : binding_point_(binding_point) {
     glGenBuffers(1, &id_);
     glBindBuffer(GL_UNIFORM_BUFFER, id_);
     glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);

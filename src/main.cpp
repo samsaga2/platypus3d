@@ -1,16 +1,16 @@
-#include "engine.h"
-#include "uniform_block.h"
-#include "transform.h"
-#include "point_light.h"
 #include "camera.h"
+#include "engine.h"
 #include "model_loader.h"
+#include "point_light.h"
+#include "transform.h"
+#include "uniform_block.h"
 #include <cmath>
 #include <cstddef>
 
 #include <GLFW/glfw3.h>
 
 class demoapp : public engine {
- protected:
+  protected:
     void init() override {
         create_model();
         setup_uniform_block();
@@ -28,7 +28,7 @@ class demoapp : public engine {
         move_camera(elapsed);
     }
 
- private:
+  private:
     std::unique_ptr<uniform_block> matrices_block_;
     std::unique_ptr<uniform_block> lights_block_;
     float delta_{0};
@@ -39,7 +39,8 @@ class demoapp : public engine {
 
     void create_model() {
         auto model_loader = ::model_loader();
-        model_ = std::make_unique<model>(model_loader.load_model("../res/guitar/backpack.obj"));
+        model_ = std::make_unique<model>(
+            model_loader.load_model("../res/guitar/backpack.obj"));
         model_->set_uniform("material.diffuse", 0);
         model_->set_uniform("material.specular", 2);
         model_->set_uniform("material.shininess", 32.0F);
@@ -81,7 +82,7 @@ class demoapp : public engine {
     void move_object(float elapsed) {
         delta_ += elapsed;
 
-        auto ori = glm::angleAxis(sinf(delta_)*0.5f, glm::vec3{0, 2.0, 1});
+        auto ori = glm::angleAxis(sinf(delta_) * 0.5f, glm::vec3{0, 2.0, 1});
         model_transform_.set_orientation(ori);
     }
 
