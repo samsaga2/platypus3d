@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.22)
 set(HEADERS
     src/camera.h
     src/engine.h
+    src/entity.h
     src/material.h
     src/mesh.h
     src/model.h
+    src/model_entity.h
     src/model_loader.h
     src/point_light.h
     src/shader.h
@@ -14,25 +16,30 @@ set(HEADERS
     src/transform.h
     src/uniform_block.h
     src/util.h
-    src/vertex_format.h
     src/vertex_buffer.h
+    src/vertex_format.h
+    src/world.h
 )
 
 set(SOURCES
     src/camera.cpp
     src/engine.cpp
+    src/entity.cpp
     src/main.cpp
     src/material.cpp
     src/mesh.cpp
     src/model.cpp
     src/model_loader.cpp
+    src/model_entity.cpp
     src/render_device.cpp
     src/shader.cpp
     src/texture.cpp
+    src/transform.cpp
     src/uniform_block.cpp
     src/util.cpp
-    src/vertex_format.cpp
     src/vertex_buffer.cpp
+    src/vertex_format.cpp
+    src/world.cpp
 )
 
 project(platypus)
